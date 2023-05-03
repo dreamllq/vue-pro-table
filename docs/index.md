@@ -1,11 +1,11 @@
+# lc-vue-pro-table
 
-# hello-world
+## 安装
 
-<script setup lang="ts">
-  import { Hello, World } from '@/index.ts'
-</script>
+```
+npm i lc-vue-pro-table
+```
 
-<div>
-  <hello />
-  <world />
-</div>
+## 基本使用
+
+<Base/>

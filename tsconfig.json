@@ -23,7 +23,20 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*",
+        "src/*.vue",
+        "src/*/index.vue"
+      ],
+      "@components/*": [
+        "docs/.vitepress/components/*",
+        "docs/.vitepress/components/*.vue",
+        "docs/.vitepress/components/*/index.vue"
+      ]
+    },
   },
   "include": [
     "src/**/*.ts",
@@ -33,7 +46,15 @@
     "src/*.ts",
     "src/*.d.ts",
     "src/*.tsx",
-    "src/*.vue"
+    "src/*.vue",
+    "docs/**/*.ts",
+    "docs/**/*.d.ts",
+    "docs/**/*.tsx",
+    "docs/**/*.vue",
+    "docs/*.ts",
+    "docs/*.d.ts",
+    "docs/*.tsx",
+    "docs/*.vue"
   ],
   "references": [
     {
