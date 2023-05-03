@@ -6,7 +6,7 @@ export interface ColumnConfig {
   index?: number | ((index:number)=>number),
   label?: string,
   columnKey?: string,
-  prop?: string,
+  prop: string,
   width?: string | number,
   minWidth?: string | number,
   fixed?: true | 'left' | 'right',
@@ -29,6 +29,7 @@ export interface ColumnConfig {
   filterMultiple?: boolean,
   filterMethod?: (value: any, row: any, column: any) => void,
   filteredValue?: string[],
+  defaultHidden?: boolean,
   defaultRender?: any,
   headerRender?: any
 }
@@ -72,4 +73,10 @@ export interface TableConfig {
   tableLayout?: 'fixed' | 'auto',
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean
+}
+
+export interface CustomColumnConfig {
+  prop:string, 
+  show: boolean,
+  label: string
 }

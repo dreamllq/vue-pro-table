@@ -63,8 +63,6 @@ const props = defineProps<{
 
 const { configs } = useTable();
 
-console.log(props.config);
-
 </script>
 
 <style scoped>

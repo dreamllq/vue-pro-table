@@ -23,7 +23,7 @@ export default defineComponent({
     },
     prop: {
       type: String as PropType<ColumnConfig['prop']>,
-      default: undefined
+      required: true
     },
     width: {
       type: [String, Number] as PropType<ColumnConfig['width']>,
@@ -120,6 +120,10 @@ export default defineComponent({
     filteredValue: {
       type: Array as PropType<ColumnConfig['filteredValue']>,
       default: undefined
+    },
+    defaultHidden: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { slots }) {

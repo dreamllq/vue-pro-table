@@ -1,11 +1,11 @@
 import { ref, inject, computed } from 'vue';
 import { createGlobalState } from '@vueuse/core';
-import { ColumnConfig } from '@/types';
-import { findIndex } from 'lodash';
+import { ColumnConfig, CustomColumnConfig } from '@/types';
+import { findIndex, cloneDeep } from 'lodash';
 
 const getStore = () => createGlobalState(() => {
   const _configs = ref<ColumnConfig[]>([]);
-  const sort = ref<string[]>([]);
+  const _columns = ref<CustomColumnConfig[]>([]);
 
   const insertConfig = (config: ColumnConfig, index: number) => {
     _configs.value.splice(index, 0, config);
@@ -16,12 +16,59 @@ const getStore = () => createGlobalState(() => {
     _configs.value.splice(index, 1);
   };
 
-  const configs = computed(() => _configs.value);
+  const getCustomColumns = () => cloneDeep(columns.value);
+
+  const updateCustomColumns = (customColumns:CustomColumnConfig[]) => {
+    _columns.value = cloneDeep(customColumns);
+  };
+
+  const configMap = computed(() => _configs.value.reduce((acc:{[index:string]: ColumnConfig}, item) => {
+    acc[item.prop] = item;
+    return acc;
+  }, {}));
+
+  const columns = computed(() => {
+    const cs:CustomColumnConfig[] = [];
+    _columns.value.forEach(item => {
+      const c = _configs.value.find(({ prop }) => prop === item.prop);
+      if (c) {
+        cs.push(item);
+      }
+    });
+
+    _configs.value.forEach(item => {
+      const t = _columns.value.find(({ prop }) => prop === item.prop);
+      if (!t) {
+        cs.push({
+          prop: item.prop,
+          show: !item.defaultHidden,
+          label: item.label!
+        });
+      }
+    });
+
+    return cs;
+  });
+
+  const configs = computed(() => {
+    const cs:ColumnConfig[] = [];
+    columns.value.filter((item) => item.show === true).forEach(item => {
+      const c = _configs.value.find(({ prop }) => prop === item.prop);
+      if (c) {
+        cs.push(c);
+      }
+    });
+    return cs;
+  });
 
   return {
     configs,
+    configMap,
+    columns,
     insertConfig,
-    removeConfig
+    removeConfig,
+    getCustomColumns,
+    updateCustomColumns
   };
 });
 

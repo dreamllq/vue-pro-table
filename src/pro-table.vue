@@ -1,5 +1,5 @@
 <template>
-  <pro-table-wrapper>
+  <pro-table-wrapper ref='proTableWrapperRef'>
     <slot />
   </pro-table-wrapper>
   <table-render :config='props'>
@@ -15,9 +15,10 @@
 
 <script setup lang="ts">
 import ProTableWrapper from './pro-table-wrapper.vue';
-import { provide, withDefaults } from 'vue';
+import { provide, withDefaults, ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import TableRender from './table-render.vue';
+import { CustomColumnConfig } from './types';
 
 provide('tableId', uuidv4());
 
@@ -64,6 +65,18 @@ const props = withDefaults(defineProps<{
   showHeader: true,
   selectOnIndeterminate: true
 }); 
+
+const proTableWrapperRef = ref();
+
+const getCustomColumns = () => proTableWrapperRef.value.getCustomColumns();
+const updateCustomColumns = (customColumns:CustomColumnConfig[]) => {
+  proTableWrapperRef.value.updateCustomColumns(customColumns);
+};
+
+defineExpose({
+  getCustomColumns,
+  updateCustomColumns
+});
 
 </script>
 
