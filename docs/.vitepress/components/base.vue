@@ -10,7 +10,7 @@
     <ProTable :data="data" ref="proTableRef">
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
       <ProTableColumn prop="a" label="aa"></ProTableColumn>
-      <ProTableColumn prop="b" label="bb">
+      <ProTableColumn prop="b" label="bb" disabled>
         <template #default="{row}">{{ row }}</template>
       </ProTableColumn>
     </ProTable>

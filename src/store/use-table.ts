@@ -42,7 +42,8 @@ const getStore = () => createGlobalState(() => {
         cs.push({
           prop: item.prop,
           show: !item.defaultHidden,
-          label: item.label!
+          label: item.label!,
+          disabled: item.disabled!
         });
       }
     });

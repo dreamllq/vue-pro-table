@@ -30,6 +30,7 @@ export interface ColumnConfig {
   filterMethod?: (value: any, row: any, column: any) => void,
   filteredValue?: string[],
   defaultHidden?: boolean,
+  disabled?: boolean,
   defaultRender?: any,
   headerRender?: any
 }
@@ -78,5 +79,6 @@ export interface TableConfig {
 export interface CustomColumnConfig {
   prop:string, 
   show: boolean,
-  label: string
+  label: string,
+  disabled: boolean
 }

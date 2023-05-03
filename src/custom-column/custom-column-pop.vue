@@ -59,5 +59,6 @@ defineExpose({ show });
 
 .popover-footer{
   text-align: right;
+  margin-top: 8px;
 }
 </style>

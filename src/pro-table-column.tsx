@@ -124,6 +124,10 @@ export default defineComponent({
     defaultHidden: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { slots }) {

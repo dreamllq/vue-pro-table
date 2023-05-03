@@ -4,7 +4,7 @@
       <el-icon><i-rank /></el-icon>
     </div>
     <div class='operate-check'>
-      <el-checkbox :model-value='show' @update:model-value='onUpdateModelValue' />
+      <el-checkbox :disabled='disabled' :model-value='show' @update:model-value='onUpdateModelValue' />
     </div>
     <div class='operate-label'>
       <span>{{ label }}</span>
@@ -17,7 +17,8 @@ import { Rank as IRank } from '@element-plus/icons';
 
 defineProps<{
   show: boolean,
-  label: string
+  label: string,
+  disabled: boolean
 }>();
 
 const emit = defineEmits(['update:modelValue']);
