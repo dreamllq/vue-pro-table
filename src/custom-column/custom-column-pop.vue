@@ -41,7 +41,6 @@ const list = ref<CustomColumnConfig[]>([]);
 
 const onSubmit = () => {
   const list = columnOperateRef.value.getData();
-  console.log(list);
   emit('submit', list);
   visible.value = false;
 };

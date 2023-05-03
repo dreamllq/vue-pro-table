@@ -34,6 +34,10 @@ const onUpdateModelValue = (val: boolean) => {
   align-items: center;
   height: 30px;
 
+  &.sortable-chosen{
+    background-color: #F5F7FA;
+  }
+
   .operate-icon{
     width: 30px;
   }

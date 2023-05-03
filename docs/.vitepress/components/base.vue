@@ -8,6 +8,8 @@
       </CustomColumnPop>
     </div>
     <ProTable :data="data" ref="proTableRef">
+
+      <ProTableColumn type="selection" label="选择" prop="selection"></ProTableColumn>
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
       <ProTableColumn prop="a" label="aa"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
