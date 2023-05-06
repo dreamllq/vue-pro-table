@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="reset">
     <div>
       <CustomColumnPop ref="customColumnPopRef" @submit="onSubmit">
         <template #reference>

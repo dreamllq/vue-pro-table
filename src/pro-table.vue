@@ -108,7 +108,7 @@ const emit = defineEmits([
   'expand-change'
 ]);
 
-const proTableWrapperRef = ref();
+const proTableWrapperRef = ref<InstanceType<typeof ProTableWrapper>>();
 const tableRef = ref<InstanceType<typeof TableRender>>();
 
 const onSelect = (...args:any[]) => emit('select', ...args);
@@ -144,9 +144,9 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => tableRef.value!
 const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
-const getCustomColumns = () => proTableWrapperRef.value.getCustomColumns();
+const getCustomColumns = () => proTableWrapperRef.value!.getCustomColumns();
 const updateCustomColumns = (customColumns:CustomColumnConfig[]) => {
-  proTableWrapperRef.value.updateCustomColumns(customColumns);
+  proTableWrapperRef.value!.updateCustomColumns(customColumns);
 };
 
 defineExpose({
