@@ -73,7 +73,8 @@ export interface TableConfig {
   treeProps?: any,
   tableLayout?: 'fixed' | 'auto',
   scrollbarAlwaysOn?: boolean,
-  flexible?:boolean
+  flexible?:boolean,
+  showSectionAlert?: boolean
 }
 
 export interface CustomColumnConfig {

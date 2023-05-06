@@ -1,5 +1,5 @@
 <template>
-  <el-checkbox :model-value='checked' @update:model-value='onUpdateModelValue' />
+  <el-checkbox :model-value='checked' @change='onUpdateModelValue' />
 </template>
 
 <script setup lang="ts">
@@ -24,13 +24,32 @@ const checked = computed(() => {
 });
 
 const onUpdateModelValue = (val) => {
-  if (val === true) {
-    rowSelection.rows.push(props.row);
-  } else {
-    const index = findIndex(rowSelection.rows, (item) => get(item, tableConfig.value.rowKey) === currentKey.value);
-    if (index > -1) {
-      rowSelection.rows.splice(index, 1);
+  if (rowSelection.type === 'positive') {
+    if (val === true) {
+      pushRow();
+    } else {
+      deleteRow();
     }
+  } else {
+    if (val === false) {
+      pushRow();
+    } else {
+      deleteRow();
+    }
+  }
+};
+
+const pushRow = () => {
+  const index = findIndex(rowSelection.rows, (item) => get(item, tableConfig.value.rowKey) === currentKey.value);
+  if (index < 0) {
+    rowSelection.rows.push(props.row);
+  }
+};
+
+const deleteRow = () => {
+  const index = findIndex(rowSelection.rows, (item) => get(item, tableConfig.value.rowKey) === currentKey.value);
+  if (index > -1) {
+    rowSelection.rows.splice(index, 1);
   }
 };
 

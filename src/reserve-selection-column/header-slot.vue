@@ -1,7 +1,7 @@
 <template>
   <div class='selection-header'>
-    <el-checkbox :model-value='checked' />
-    <el-dropdown trigger='click'>
+    <el-checkbox :model-value='checked' :indeterminate='indeterminate' @change='onChange' />
+    <el-dropdown trigger='click' @command='onCommand'>
       <span class='el-dropdown-link'>
         <el-icon>
           <arrow-down />
@@ -9,8 +9,12 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>全选所有</el-dropdown-item>
-          <el-dropdown-item>反选当页</el-dropdown-item>
+          <el-dropdown-item v-if='rowSelection.type === "reverse"' :command='COMMAND_POSITIVE'>
+            取消全选
+          </el-dropdown-item>
+          <el-dropdown-item v-if='rowSelection.type === "positive"' :command='COMMAND_REVERSE'>
+            全部选择
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown> 
@@ -21,25 +25,74 @@
 import { computed } from 'vue';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { useTable } from '@/store/use-table';
-import { get, intersection } from 'lodash';
+import { get, intersection, findIndex } from 'lodash';
+
+const COMMAND_POSITIVE = 'positiveModel';
+const COMMAND_REVERSE = 'reverseModel';
 
 defineProps<{ column: any, index: number }>();
 
 const { rowSelection, tableConfig } = useTable();
 
-const checked = computed(() => {
+const intersectionRowKeys = computed(() => {
   const keys = tableConfig.value.data?.map(item => get(item, tableConfig.value.rowKey));
   const selectionRowKeys = rowSelection.rows.map(item => get(item, tableConfig.value.rowKey));
 
-  const intersectionRowKeys = intersection(keys, selectionRowKeys);
+  return intersection(keys, selectionRowKeys);
+});
 
+const checked = computed(() => {
   if (rowSelection.type === 'positive') {
-    return intersectionRowKeys.length === tableConfig.value.data?.length;
+    return intersectionRowKeys.value.length === tableConfig.value.data?.length;
   } else {
-    return intersectionRowKeys.length === 0;
+    return intersectionRowKeys.value.length === 0;
   }
 });
 
+const indeterminate = computed(() => intersectionRowKeys.value.length > 0 && intersectionRowKeys.value.length < (tableConfig.value.data?.length ?? 0));
+
+const onCommand = (command) => {
+  rowSelection.rows = [];
+  if (command === COMMAND_POSITIVE) {
+    rowSelection.type = 'positive';
+  } else if (command === COMMAND_REVERSE) {
+    rowSelection.type = 'reverse';
+  }
+};
+
+const onChange = (val) => {
+  if (rowSelection.type === 'positive') {
+    if (val === true) {
+      pushRows();
+    } else {
+      deleteRows();
+    }
+  } else {
+    if (val === false) {
+      pushRows();
+    } else {
+      deleteRows();
+    }
+  }
+};
+
+const pushRows = () => {
+  tableConfig.value.data?.forEach(row => {
+    const index = findIndex(rowSelection.rows, (item) => get(item, tableConfig.value.rowKey) === get(row, tableConfig.value.rowKey));
+    if (index < 0) {
+      rowSelection.rows.push(row);
+    }
+  });
+};
+
+const deleteRows = () => {
+  tableConfig.value.data?.forEach(row => {
+    const index = findIndex(rowSelection.rows, (item) => get(item, tableConfig.value.rowKey) === get(row, tableConfig.value.rowKey));
+    if (index > -1) {
+      rowSelection.rows.splice(index, 1);
+    }
+  });
+};
 </script>
 
 <style scoped lang="scss">

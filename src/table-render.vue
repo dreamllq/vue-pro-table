@@ -78,8 +78,8 @@ import TableColumnRender from './table-column-render.tsx';
 import { TableConfig } from './types';
 import type { TableInstance } from 'element-plus';
 
-const props = defineProps<{
-  config: TableConfig
+defineProps<{
+  config: TableConfig,
 }>();
 
 const { columnConfigs } = useTable();

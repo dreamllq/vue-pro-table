@@ -72,7 +72,6 @@ const getStore = () => createGlobalState(() => {
   });
 
   const setTableConfig = (c) => {
-    console.log('setTableConfig', c);
     tableConfig.value = c;
   };
 

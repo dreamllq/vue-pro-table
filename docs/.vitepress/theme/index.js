@@ -5,6 +5,7 @@ import './custom.scss';
 import NotFound from './not-found.vue'
 import DefaultTheme from 'vitepress/theme'
 import Base from '@components/base.vue'
+import WithPagination from '@components/with-pagination.vue'
 
 export default {
   ...DefaultTheme,
@@ -13,5 +14,6 @@ export default {
   enhanceApp({ app, router, siteData }) {
     app.use(ElementPlus);
     app.component('Base', Base)
+    app.component('WithPagination', WithPagination)
   }
 };

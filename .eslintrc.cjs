@@ -66,8 +66,8 @@ module.exports = {
       }
     ],
     'no-whitespace-before-property': 'error',
-    'no-console': process.env.NODE_ENV === 'production' ? 'off' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': 'off',
+    'no-debugger': 'off',
     'no-unused-vars': 'off',
     'no-dupe-keys': 'error',
     'eqeqeq': 'warn',
@@ -145,6 +145,7 @@ module.exports = {
     'vue/no-mutating-props': 'warn',
     'vue/require-valid-default-prop': 'warn',
     'vue/no-duplicate-attributes': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'off'
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
   }
 };
