@@ -45,11 +45,11 @@
 
 <script setup lang="ts">
 import { onUnmounted, ref, onMounted, computed } from 'vue';
-import SectionAlert from './section-alert/index.vue';
+import SectionAlert from '@/section-alert/index.vue';
 import { clearTable, useTable } from '@/store/use-table';
 import type { TableInstance } from 'element-plus';
-import { TableConfig } from './types';
-import TableRender from './table-render.vue';
+import { TableConfig } from '@/types';
+import TableRender from '@/table-render.vue';
 import { cloneDeep } from 'lodash';
 
 const { getCustomColumns, updateCustomColumns, setTableConfig, rowSelection } = useTable();
