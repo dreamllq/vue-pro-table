@@ -45,13 +45,14 @@
 
 <script setup lang="ts">
 import { onUnmounted, ref, onMounted, computed } from 'vue';
-import SectionAlert from './section-alert.vue';
+import SectionAlert from './section-alert/index.vue';
 import { clearTable, useTable } from '@/store/use-table';
 import type { TableInstance } from 'element-plus';
 import { TableConfig } from './types';
 import TableRender from './table-render.vue';
+import { cloneDeep } from 'lodash';
 
-const { getCustomColumns, updateCustomColumns, setTableConfig } = useTable();
+const { getCustomColumns, updateCustomColumns, setTableConfig, rowSelection } = useTable();
 
 const props = defineProps<{
   config: TableConfig,
@@ -135,6 +136,8 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => tableRef.value!
 const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
+const getReserveSelection = () => cloneDeep(rowSelection);
+
 
 onUnmounted(() => {
   clearTable();
@@ -143,6 +146,7 @@ onUnmounted(() => {
 defineExpose({
   getCustomColumns,
   updateCustomColumns,
+  getReserveSelection,
   setTableConfig,
   clearSelection,
   getSelectionRows,

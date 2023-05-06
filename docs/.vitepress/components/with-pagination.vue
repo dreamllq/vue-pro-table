@@ -1,10 +1,13 @@
 <template>
- <div style="height: 600px;" class="reset">
+  <div>
+    <el-checkbox v-model="showSectionAlert">showSectionAlert</el-checkbox>
+  </div>
+  <div style="height: 600px;" class="reset">
     <AutoPagination :fetch-data="fetchData" ref="pagination" auto-init>
       <template #default="{data, indexMethod}">
         <AutoHeightWrapper>
         <template #default="{size}">
-          <ProTable :data="data" rowKey="id" :height="size.height" showSectionAlert>
+          <ProTable :data="data" rowKey="id" :height="size.height" :showSectionAlert="showSectionAlert" ref="tableRef">
             <ProTableColumn type="selection" label="选择" prop="selection"> </ProTableColumn>
             <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection"> </ProTableColumn>
             <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
@@ -18,12 +21,20 @@
       </template>
     </AutoPagination>
   </div>
+  <div>
+    <el-button @click="getReserveSelection">获取选择记录</el-button>
+  </div>
 </template>
 
 <script setup lang="ts">
+import {ref} from 'vue';
 import { AutoPagination } from 'lc-vue-auto-pagination';
 import { AutoHeightWrapper } from 'lc-vue-auto-height-wrapper';
 import { ProTable, ProTableColumn, CustomColumnPop } from 'lc-vue-pro-table';
+
+const tableRef = ref<InstanceType<typeof ProTable>>()
+
+const showSectionAlert=ref(true)
 
 const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = async ({ pageNo, pageSize }) => {
   const list:any[] = [];
@@ -40,6 +51,10 @@ const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = as
     list: list,
     total: 201
   }
+}
+
+const getReserveSelection = ()=>{
+  console.log(tableRef.value.getReserveSelection())
 }
 
 </script>

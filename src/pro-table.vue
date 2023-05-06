@@ -142,10 +142,12 @@ const getCustomColumns = () => proTableWrapperRef.value!.getCustomColumns();
 const updateCustomColumns = (customColumns:CustomColumnConfig[]) => {
   proTableWrapperRef.value!.updateCustomColumns(customColumns);
 };
+const getReserveSelection = () => proTableWrapperRef.value!.getReserveSelection();
 
 defineExpose({
   getCustomColumns,
   updateCustomColumns,
+  getReserveSelection,
   clearSelection,
   getSelectionRows,
   toggleRowSelection,
