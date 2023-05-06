@@ -39,6 +39,7 @@ import { provide, withDefaults, ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import TableRender from './table-render.vue';
 import { CustomColumnConfig } from './types';
+import type { TableInstance } from 'element-plus';
 
 provide('tableId', uuidv4());
 
@@ -108,7 +109,7 @@ const emit = defineEmits([
 ]);
 
 const proTableWrapperRef = ref();
-const tableRef = ref();
+const tableRef = ref<InstanceType<typeof TableRender>>();
 
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
@@ -129,19 +130,19 @@ const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
-const clearSelection = (...args: any[]) => tableRef.value.clearSelection(...args);
-const getSelectionRows = (...args: any[]) => tableRef.value.getSelectionRows(...args);
-const toggleRowSelection = (...args: any[]) => tableRef.value.toggleRowSelection(...args);
-const toggleAllSelection = (...args: any[]) => tableRef.value.toggleAllSelection(...args);
-const toggleRowExpansion = (...args: any[]) => tableRef.value.toggleRowExpansion(...args);
-const setCurrentRow = (...args: any[]) => tableRef.value.setCurrentRow(...args);
-const clearSort = (...args: any[]) => tableRef.value.clearSort(...args);
-const clearFilter = (...args: any[]) => tableRef.value.clearFilter(...args);
-const doLayout = (...args: any[]) => tableRef.value.doLayout(...args);
-const sort = (...args: any[]) => tableRef.value.sort(...args);
-const scrollTo = (...args: any[]) => tableRef.value.scrollTo(...args);
-const setScrollTop = (...args:any[]) => tableRef.value.setScrollTop(...args);
-const setScrollLeft = (...args: any[]) => tableRef.value.setScrollLeft(...args);
+const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
+const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
+const toggleRowSelection: TableInstance['toggleRowSelection'] = (row, selected) => tableRef.value!.toggleRowSelection(row, selected);
+const toggleAllSelection: TableInstance['toggleAllSelection'] = () => tableRef.value!.toggleAllSelection();
+const toggleRowExpansion: TableInstance['toggleRowExpansion'] = (row, expanded) => tableRef.value!.toggleRowExpansion(row, expanded);
+const setCurrentRow: TableInstance['setCurrentRow'] = (row) => tableRef.value!.setCurrentRow(row);
+const clearSort = () => tableRef.value!.clearSort();
+const clearFilter: TableInstance['clearFilter'] = (columnKeys) => tableRef.value!.clearFilter(columnKeys);
+const doLayout = () => tableRef.value!.doLayout();
+const sort: TableInstance['sort'] = (prop, order) => tableRef.value!.sort(prop, order);
+const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => tableRef.value!.scrollTo(options, yCoord);
+const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.setScrollTop(top);
+const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
 const getCustomColumns = () => proTableWrapperRef.value.getCustomColumns();
 const updateCustomColumns = (customColumns:CustomColumnConfig[]) => {
