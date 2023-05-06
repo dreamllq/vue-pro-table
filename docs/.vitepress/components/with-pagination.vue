@@ -2,6 +2,13 @@
   <div>
     <el-checkbox v-model="showSectionAlert">showSectionAlert</el-checkbox>
   </div>
+    <div>
+      <CustomColumnPop ref="customColumnPopRef" @submit="onSubmit">
+        <template #reference>
+          <el-button :icon="Setting" @click="onSetting"/>
+        </template>
+      </CustomColumnPop>
+    </div>
   <div style="height: 600px;" class="reset">
     <AutoPagination :fetch-data="fetchData" ref="pagination" auto-init>
       <template #default="{data, indexMethod}">
@@ -31,8 +38,10 @@ import {ref} from 'vue';
 import { AutoPagination } from 'lc-vue-auto-pagination';
 import { AutoHeightWrapper } from 'lc-vue-auto-height-wrapper';
 import { ProTable, ProTableColumn, CustomColumnPop } from 'lc-vue-pro-table';
+import { Setting } from '@element-plus/icons';
 
 const tableRef = ref<InstanceType<typeof ProTable>>()
+const customColumnPopRef = ref<InstanceType<typeof CustomColumnPop>>()
 
 const showSectionAlert=ref(true)
 
@@ -55,6 +64,15 @@ const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = as
 
 const getReserveSelection = ()=>{
   console.log(tableRef.value.getReserveSelection())
+}
+
+const onSetting = ()=>{
+  const columns = tableRef.value.getCustomColumns()
+  customColumnPopRef.value.show(columns)
+}
+
+const onSubmit = (list)=>{
+  tableRef.value.updateCustomColumns(list)
 }
 
 </script>
