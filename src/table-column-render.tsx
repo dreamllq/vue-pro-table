@@ -1,5 +1,7 @@
 import { PropType, defineComponent } from 'vue';
 import { ColumnConfig } from './types';
+import ReserveSelectionColumnDefaultSlot from './reserve-selection-column/default-slot.vue';
+import ReserveSelectionColumnHeaderSlot from './reserve-selection-column/header-slot.vue';
 
 export default defineComponent({
   props: {
@@ -11,20 +13,25 @@ export default defineComponent({
   render() {
     const slotsRender: { default?:any, header?: any } = {};
 
-    if (this.config.defaultRender) {
-      slotsRender.default = (d: any) => this.config.defaultRender(d);
-    }
+    if (this.config.type === 'reserveSelection') {
+      slotsRender.default = (d:any) => <ReserveSelectionColumnDefaultSlot row={d.row} column={d.column} index={d.$index}/>;
+      slotsRender.header = (d:any) => <ReserveSelectionColumnHeaderSlot column={d.column} index={d.$index}/>;
+    } else {
+      if (this.config.defaultRender) {
+        slotsRender.default = (d: any) => this.config.defaultRender(d);
+      }
 
-    if (this.config.headerRender) {
-      slotsRender.header = (d: any) => this.config.headerRender(d); 
+      if (this.config.headerRender) {
+        slotsRender.header = (d: any) => this.config.headerRender(d); 
+      }
     }
     return <el-table-column 
       prop={this.config.prop} 
       label={this.config.label}
-      type={this.config.type}
+      type={this.config.type === 'reserveSelection' ? undefined : this.config.type}
       index={this.config.index}
       columnKey={this.config.columnKey}
-      width={this.config.width}
+      width={this.config.type === 'reserveSelection' ? 60 : this.config.width}
       minWidth={this.config.minWidth}
       fixed={this.config.fixed}
       renderHeader={this.config.renderHeader}

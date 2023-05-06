@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import ProTableWrapper from './pro-table-wrapper.vue';
-import { provide, withDefaults, ref } from 'vue';
+import { provide, withDefaults, ref, watchPostEffect } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import TableRender from './table-render.vue';
 import { CustomColumnConfig } from './types';
@@ -110,6 +110,10 @@ const emit = defineEmits([
 
 const proTableWrapperRef = ref<InstanceType<typeof ProTableWrapper>>();
 const tableRef = ref<InstanceType<typeof TableRender>>();
+
+watchPostEffect(() => {
+  proTableWrapperRef.value?.setTableConfig(props);
+});
 
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);

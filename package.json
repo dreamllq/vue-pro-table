@@ -3,12 +3,12 @@
   "description": "vue3高级表格",
   "version": "0.0.0",
   "type": "module",
-  "main": "./dist/lc-vue-pro-table.umd.cjs",
-  "module": "./dist/lc-vue-pro-table.js",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/lc-vue-pro-table.js",
-      "require": "./dist/lc-vue-pro-table.umd.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
     }
   },
   "files": [

@@ -2,7 +2,7 @@ import { VNode } from 'vue';
 
 export interface ColumnConfig {
   id: string,
-  type?: 'selection' | 'index' | 'expand',
+  type?: 'selection' | 'reserveSelection' | 'index' | 'expand',
   index?: number | ((index:number)=>number),
   label?: string,
   columnKey?: string,

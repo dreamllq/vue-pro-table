@@ -10,7 +10,7 @@
 import { onUnmounted } from 'vue';
 import { clearTable, useTable } from '@/store/use-table';
 
-const { getCustomColumns, updateCustomColumns } = useTable();
+const { getCustomColumns, updateCustomColumns, setTableConfig } = useTable();
 
 onUnmounted(() => {
   clearTable();
@@ -18,7 +18,8 @@ onUnmounted(() => {
 
 defineExpose({
   getCustomColumns,
-  updateCustomColumns
+  updateCustomColumns,
+  setTableConfig
 });
 </script>
 

@@ -1,11 +1,20 @@
-import { ref, inject, computed } from 'vue';
+import { ref, inject, computed, reactive, Ref } from 'vue';
 import { createGlobalState } from '@vueuse/core';
-import { ColumnConfig, CustomColumnConfig } from '@/types';
+import { ColumnConfig, CustomColumnConfig, TableConfig } from '@/types';
 import { findIndex, cloneDeep } from 'lodash';
 
 const getStore = () => createGlobalState(() => {
   const _configs = ref<ColumnConfig[]>([]);
   const _columns = ref<CustomColumnConfig[]>([]);
+  const rowSelection = reactive<{
+    rows: any[],
+    type: 'reverse' | 'positive'
+      }>({
+        rows: [],
+        type: 'positive' 
+      });
+
+  const tableConfig = ref<TableConfig>({});
 
   const insertConfig = (config: ColumnConfig, index: number) => {
     _configs.value.splice(index, 0, config);
@@ -62,14 +71,22 @@ const getStore = () => createGlobalState(() => {
     return cs;
   });
 
+  const setTableConfig = (c) => {
+    console.log('setTableConfig', c);
+    tableConfig.value = c;
+  };
+
   return {
+    tableConfig: tableConfig as Readonly<Ref<TableConfig>>,
+    rowSelection,
     columnConfigs,
     configMap,
     columns,
     insertConfig,
     removeConfig,
     getCustomColumns,
-    updateCustomColumns
+    updateCustomColumns,
+    setTableConfig
   };
 });
 

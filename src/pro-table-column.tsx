@@ -138,7 +138,7 @@ export default defineComponent({
       id: uuidv4(),
       ...props,
       defaultRender: slots.default ? (data:{ row: any, column: any, $index:number }) => slots.default!(data) : undefined,
-      headerRender: slots.header ? (data:{ row: any, column: any, $index:number }) => slots.header!(data) : undefined
+      headerRender: slots.header ? (data:{ column: any, $index:number }) => slots.header!(data) : undefined
     });
 
     onMounted(() => {

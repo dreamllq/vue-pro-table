@@ -7,9 +7,11 @@
         </template>
       </CustomColumnPop>
     </div>
-    <ProTable :data="data" ref="proTableRef">
-
-      <ProTableColumn type="selection" label="选择" prop="selection"></ProTableColumn>
+    <ProTable :data="data" ref="proTableRef" rowKey="id">
+      <ProTableColumn type="selection" label="选择" prop="selection">
+      </ProTableColumn>
+      <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection">
+      </ProTableColumn>
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
       <ProTableColumn prop="a" label="aa"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
@@ -24,9 +26,11 @@ import { ProTable, ProTableColumn, CustomColumnPop } from 'lc-vue-pro-table';
 import { Setting } from '@element-plus/icons';
 import { ref } from 'vue';
 const data = ref([{
+  id: 1,
   a:10,
   b:11
 }, {
+  id:2,
   a:20,
   b:22
 }])
