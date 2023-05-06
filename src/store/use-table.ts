@@ -51,7 +51,7 @@ const getStore = () => createGlobalState(() => {
     return cs;
   });
 
-  const configs = computed(() => {
+  const columnConfigs = computed(() => {
     const cs:ColumnConfig[] = [];
     columns.value.filter((item) => item.show === true).forEach(item => {
       const c = _configs.value.find(({ prop }) => prop === item.prop);
@@ -63,7 +63,7 @@ const getStore = () => createGlobalState(() => {
   });
 
   return {
-    configs,
+    columnConfigs,
     configMap,
     columns,
     insertConfig,
