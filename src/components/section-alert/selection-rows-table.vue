@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { useTable } from '@/store/use-table';
-import TableRender from '@/table-render.vue';
+import TableRender from '@/components/el-table-render/table-render.vue';
 import { reactive } from 'vue';
 
 const { rowSelection } = useTable();
