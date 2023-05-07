@@ -122,13 +122,18 @@ const onSubmit = (list)=>{
 | ---- | ---- | ---- | ---- |
 | showSectionAlert | 是否显示选项提示 | boolean | false |
 
-## Exposes
+### ProTable Exposes
 
 | 名称 | 描述 | 类型 |
 | ---- | ---- | ---- |
-| getCustomColumns | 获取自定义列配置 | () => CustomColumnConfig[] | 
-| updateCustomColumns | 更新自定义列配置 | (customColumns: CustomColumnConfig[]) => void |
 | getReserveSelection | 获取跨页多选信息,ProTableColumn.type='reserveSelection' | () => \{ rows: any[]; type: "reverse" | "positive"; \} |
+
+### FormGrid Events
+
+| 事件名 | 说明 | 类型 |
+| ---- | ---- | ---- |
+| reserve-selection-change | 跨页多选变化 | \{ rows: any[]; type: "reverse" | "positive"; \} |
+
 
 ## 较 el-table-column 变更的 Api
 

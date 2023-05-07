@@ -4,10 +4,10 @@
       <el-button :icon="Setting" ref="settingRef"/>
     </div>
     <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef">
-      <ProTableColumn type="selection" label="选择" prop="selection">
       </ProTableColumn>
       <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection">
       </ProTableColumn>
+      <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
       <ProTableColumn prop="a" label="aa"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
         <template #default="{row}">{{ row }}</template>

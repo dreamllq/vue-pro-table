@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, onMounted, computed } from 'vue';
+import { onUnmounted, ref, onMounted, computed, watch } from 'vue';
 import SectionAlert from '@/section-alert/index.vue';
 import { clearTable, useTable } from '@/store/use-table';
 import type { TableInstance } from 'element-plus';
@@ -78,7 +78,8 @@ const emit = defineEmits([
   'filter-change',
   'current-change',
   'header-dragend',
-  'expand-change'
+  'expand-change',
+  'reserve-selection-change'
 ]);
 
 const sectionAlertRef = ref();
@@ -123,6 +124,10 @@ const onFilterChange = (...args: any[]) => emit('filter-change', ...args);
 const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
+
+watch(rowSelection, () => {
+  emit('reserve-selection-change', cloneDeep(rowSelection));
+});
 
 const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();

@@ -181,6 +181,13 @@ const onSubmit = (list)=>{
 | ---- | ---- | ---- |
 | getReserveSelection | 获取跨页多选信息,ProTableColumn.type='reserveSelection' | () => \{ rows: any[]; type: "reverse" | "positive"; \} |
 
+### FormGrid Events
+
+| 事件名 | 说明 | 类型 |
+| ---- | ---- | ---- |
+| reserve-selection-change | 跨页多选变化 | \{ rows: any[]; type: "reverse" | "positive"; \} |
+
+
 ## 较 el-table-column 变更的 Api
 
 ### ProTableColumn Props
