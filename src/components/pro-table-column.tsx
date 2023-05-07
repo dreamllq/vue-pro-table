@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { defineComponent, ref, onMounted, getCurrentInstance, onUnmounted, PropType } from 'vue';
+import { defineComponent, ref, onMounted, getCurrentInstance, onUnmounted, PropType, watch, computed } from 'vue';
 import { ColumnConfig } from '@/types';
 import { useTable } from '@/store/use-table';
 
@@ -132,14 +132,19 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     const instance = getCurrentInstance();
-    const { insertConfig, removeConfig } = useTable();
+    const { insertConfig, removeConfig, updateConfig } = useTable();
+    const id = uuidv4();
     
-    const config = ref<ColumnConfig>({ 
-      id: uuidv4(),
+    const config = computed(() => ({ 
+      id: id,
       ...props,
       defaultRender: slots.default ? (data:{ row: any, column: any, $index:number }) => slots.default!(data) : undefined,
       headerRender: slots.header ? (data:{ column: any, $index:number }) => slots.header!(data) : undefined
-    });
+    }));
+
+    watch(() => config.value, () => {
+      updateConfig(config.value);
+    }, { deep: true });
 
     onMounted(() => {
       const hiddenItems: Element = instance!.parent!.refs!.hiddenItems as Element;

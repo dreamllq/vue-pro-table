@@ -74,7 +74,7 @@ export interface TableConfig {
   tableLayout?: 'fixed' | 'auto',
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean,
-  showSectionAlert?: boolean,
+  showSelectionAlert?: boolean,
   customColumnVirtualRef?: Ref<any>
 }
 

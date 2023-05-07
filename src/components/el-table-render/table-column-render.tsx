@@ -1,4 +1,4 @@
-import { PropType, defineComponent } from 'vue';
+import { PropType, defineComponent, ref, watch, nextTick } from 'vue';
 import { ColumnConfig } from '@/types';
 import ReserveSelectionColumnDefaultSlot from '@/components/reserve-selection-column/default-slot.vue';
 import ReserveSelectionColumnHeaderSlot from '@/components/reserve-selection-column/header-slot.vue';
@@ -10,7 +10,20 @@ export default defineComponent({
       required: true
     }
   },
+  setup(props) {
+    const ready = ref(true);
+    watch(() => props.config, async () => {
+      ready.value = false;
+      await nextTick();
+      ready.value = true;
+    }, { deep: true });
+    
+    return { ready };
+  },
   render() {
+    if (this.ready === false) {
+      return;
+    }
     const slotsRender: { default?:any, header?: any } = {};
 
     if (this.config.type === 'reserveSelection') {
@@ -25,6 +38,7 @@ export default defineComponent({
         slotsRender.header = (d: any) => this.config.headerRender(d); 
       }
     }
+
     return <el-table-column 
       prop={this.config.prop} 
       label={this.config.label}

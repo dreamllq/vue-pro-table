@@ -32,7 +32,7 @@ npm i lc-vue-pro-table
 ```vue
 <template>
   <div>
-    <el-checkbox v-model="showSectionAlert">showSectionAlert</el-checkbox>
+    <el-checkbox v-model="showSelectionAlert">showSelectionAlert</el-checkbox>
   </div>
     <div>
       <CustomColumnPop ref="customColumnPopRef" @submit="onSubmit">
@@ -46,7 +46,7 @@ npm i lc-vue-pro-table
       <template #default="{data, indexMethod}">
         <AutoHeightWrapper>
         <template #default="{size}">
-          <ProTable :data="data" rowKey="id" :height="size.height" :showSectionAlert="showSectionAlert" ref="tableRef">
+          <ProTable :data="data" rowKey="id" :height="size.height" :showSelectionAlert="showSelectionAlert" ref="tableRef">
             <ProTableColumn type="selection" label="选择" prop="selection"> </ProTableColumn>
             <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection"> </ProTableColumn>
             <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
@@ -75,7 +75,7 @@ import { Setting } from '@element-plus/icons';
 const tableRef = ref<InstanceType<typeof ProTable>>()
 const customColumnPopRef = ref<InstanceType<typeof CustomColumnPop>>()
 
-const showSectionAlert=ref(true)
+const showSelectionAlert=ref(true)
 
 const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = async ({ pageNo, pageSize }) => {
   const list:any[] = [];
@@ -120,7 +120,7 @@ const onSubmit = (list)=>{
 
 | 属性名 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
-| showSectionAlert | 是否显示选项提示 | boolean | false |
+| showSelectionAlert | 是否显示选项提示 | boolean | false |
 
 ### ProTable Exposes
 

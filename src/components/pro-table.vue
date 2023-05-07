@@ -70,7 +70,7 @@ const props = withDefaults(defineProps<{
   tableLayout?: 'fixed' | 'auto',
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean,
-  showSectionAlert?: boolean,
+  showSelectionAlert?: boolean,
   customColumnVirtualRef?: Ref<any>
 }>(), {
   fit: true,

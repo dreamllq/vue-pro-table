@@ -6,6 +6,7 @@ import NotFound from './not-found.vue'
 import DefaultTheme from 'vitepress/theme'
 import Base from '@components/base.vue'
 import WithPagination from '@components/with-pagination.vue'
+import TypeSelection from '@components/type-selection.vue'
 
 export default {
   ...DefaultTheme,
@@ -15,5 +16,6 @@ export default {
     app.use(ElementPlus);
     app.component('Base', Base)
     app.component('WithPagination', WithPagination)
+    app.component('TypeSelection', TypeSelection)
   }
 };

@@ -1,7 +1,7 @@
 import { ref, inject, computed, reactive, Ref } from 'vue';
 import { createGlobalState } from '@vueuse/core';
 import { ColumnConfig, CustomColumnConfig, TableConfig } from '@/types';
-import { findIndex, cloneDeep } from 'lodash';
+import { findIndex, cloneDeep, merge } from 'lodash';
 
 const getStore = () => createGlobalState(() => {
   const _configs = ref<ColumnConfig[]>([]);
@@ -18,6 +18,11 @@ const getStore = () => createGlobalState(() => {
 
   const insertConfig = (config: ColumnConfig, index: number) => {
     _configs.value.splice(index, 0, config);
+  };
+
+  const updateConfig = (config) => {
+    const index = findIndex(_configs.value, (o) => o.id === config.id);
+    merge(_configs.value[index], config);
   };
   
   const removeConfig = (config: ColumnConfig) => {
@@ -82,6 +87,7 @@ const getStore = () => createGlobalState(() => {
     configMap,
     columns,
     insertConfig,
+    updateConfig,
     removeConfig,
     getCustomColumns,
     updateCustomColumns,

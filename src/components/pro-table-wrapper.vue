@@ -6,7 +6,7 @@
   </div>
   <div class='pro-table'>
     <div ref='sectionAlertRef' class='section-alert'>
-      <section-alert v-if='config.showSectionAlert' />
+      <section-alert v-if='config.showSelectionAlert' />
     </div>
     <div v-if='ready' class='table-main'>
       <table-render
@@ -91,7 +91,7 @@ const ready = ref(false);
 const tableConfigProxy = computed(() => {
   let height = props.config.height;
 
-  if (height && props.config.showSectionAlert) {
+  if (height && props.config.showSelectionAlert) {
     height = Number(height) - sectionAlertHeight.value;
   }
 
@@ -108,7 +108,12 @@ onMounted(() => {
 
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
-const onSelectionChange = (...args: any[]) => emit('selection-change', ...args);
+const onSelectionChange = (...args: any[]) => {
+  const selections = args[0];
+  rowSelection.rows = cloneDeep(selections);
+  rowSelection.type = 'positive';
+  emit('selection-change', cloneDeep(rowSelection));
+};
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
 const onCellMouseLeave = (...args: any[]) => emit('cell-mouse-leave', ...args);
 const onCellClick = (...args: any[]) => emit('cell-click', ...args);
