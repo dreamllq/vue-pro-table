@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { defineComponent, ref, onMounted, getCurrentInstance, onUnmounted, PropType, watch, computed } from 'vue';
+import { defineComponent, onMounted, getCurrentInstance, onUnmounted, PropType, watch, computed } from 'vue';
 import { ColumnConfig } from '@/types';
 import { useTable } from '@/store/use-table';
 
