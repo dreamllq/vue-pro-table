@@ -4,7 +4,6 @@
       <el-button :icon="Setting" ref="settingRef"/>
     </div>
     <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef">
-      </ProTableColumn>
       <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection">
       </ProTableColumn>
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
