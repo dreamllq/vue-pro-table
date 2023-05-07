@@ -16,7 +16,9 @@ npm i lc-vue-pro-table
 
 ## 基本使用
 
-<Base />
+<div>
+  <Base />
+</div>
 
 ```vue
 <template>
@@ -76,7 +78,9 @@ const onSubmit = (list)=>{
 
 ## 翻页场景
 
-<WithPagination />
+<div>
+  <WithPagination />
+</div>
 
 ```vue
 <template>
@@ -171,12 +175,10 @@ const onSubmit = (list)=>{
 | ---- | ---- | ---- | ---- |
 | showSectionAlert | 是否显示选项提示 | boolean | false |
 
-## Exposes
+### ProTable Exposes
 
 | 名称 | 描述 | 类型 |
 | ---- | ---- | ---- |
-| getCustomColumns | 获取自定义列配置 | () => CustomColumnConfig[] | 
-| updateCustomColumns | 更新自定义列配置 | (customColumns: CustomColumnConfig[]) => void |
 | getReserveSelection | 获取跨页多选信息,ProTableColumn.type='reserveSelection' | () => \{ rows: any[]; type: "reverse" | "positive"; \} |
 
 ## 较 el-table-column 变更的 Api

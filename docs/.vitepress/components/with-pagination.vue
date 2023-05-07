@@ -3,19 +3,14 @@
     <el-checkbox v-model="showSectionAlert">showSectionAlert</el-checkbox>
   </div>
   <div>
-    <CustomColumnPop ref="customColumnPopRef" @submit="onSubmit">
-      <template #reference>
-        <el-button :icon="Setting" @click="onSetting"/>
-      </template>
-    </CustomColumnPop>
+    <el-button :icon="Setting" ref="settingRef"/>
   </div>
   <div style="height: 600px;" class="reset">
     <AutoPagination :fetch-data="fetchData" ref="pagination" auto-init>
       <template #default="{data, indexMethod}">
         <AutoHeightWrapper>
           <template #default="{size}">
-            <ProTable :data="data" rowKey="id" :height="size.height" :showSectionAlert="showSectionAlert" ref="tableRef">
-              <ProTableColumn type="selection" label="选择" prop="selection"> </ProTableColumn>
+            <ProTable :data="data" rowKey="id" :height="size.height" :showSectionAlert="showSectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef">
               <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
               <ProTableColumn prop="id" label="id"></ProTableColumn>
@@ -40,6 +35,7 @@ import { AutoHeightWrapper } from 'lc-vue-auto-height-wrapper';
 import { ProTable, ProTableColumn, CustomColumnPop } from 'lc-vue-pro-table';
 import { Setting } from '@element-plus/icons';
 
+const settingRef = ref()
 const tableRef = ref<InstanceType<typeof ProTable>>()
 const customColumnPopRef = ref<InstanceType<typeof CustomColumnPop>>()
 

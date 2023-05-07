@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import ProTableWrapper from '@/pro-table-wrapper.vue';
-import { provide, withDefaults, ref, watchPostEffect } from 'vue';
+import { provide, withDefaults, ref, watchPostEffect, Ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomColumnConfig } from '@/types';
 import type { TableInstance } from 'element-plus';
@@ -71,7 +71,8 @@ const props = withDefaults(defineProps<{
   tableLayout?: 'fixed' | 'auto',
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean,
-  showSectionAlert?: boolean
+  showSectionAlert?: boolean,
+  customColumnVirtualRef?: Ref<any>
 }>(), {
   fit: true,
   showHeader: true,
@@ -138,15 +139,9 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => proTableWrapper
 const setScrollTop: TableInstance['setScrollTop'] = (top) => proTableWrapperRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => proTableWrapperRef.value!.setScrollLeft(left);
 
-const getCustomColumns = () => proTableWrapperRef.value!.getCustomColumns();
-const updateCustomColumns = (customColumns:CustomColumnConfig[]) => {
-  proTableWrapperRef.value!.updateCustomColumns(customColumns);
-};
 const getReserveSelection = () => proTableWrapperRef.value!.getReserveSelection();
 
 defineExpose({
-  getCustomColumns,
-  updateCustomColumns,
   getReserveSelection,
   clearSelection,
   getSelectionRows,

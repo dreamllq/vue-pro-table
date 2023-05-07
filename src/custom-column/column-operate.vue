@@ -23,19 +23,19 @@
 <script setup lang="ts">
 import { CustomColumnConfig } from '@/types';
 import ColumnOperateItem from './column-operate-item.vue';
-import { PropType, ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash';
+import { useTable } from '@/store/use-table';
 
+const { columns } = useTable();
 
-const props = defineProps({
-  list: {
-    type: Array as PropType<CustomColumnConfig[]>,
-    default: () => []
-  }
+const customColumns = ref<CustomColumnConfig[]>([]);
+
+watchEffect(() => {
+  customColumns.value = cloneDeep(columns.value);
 });
 
-const customColumns = ref(cloneDeep(props.list));
 
 const allCheckState = computed(() => {
   const length = customColumns.value.filter(item => item.show === true).length;
@@ -58,7 +58,7 @@ const onUpdateModelValue = (element, val) => {
   element.show = val;
 };
 
-const getData = () => cloneDeep(customColumns.value);
+const getData:()=>CustomColumnConfig[] = () => cloneDeep(customColumns.value);
 
 defineExpose({ getData });
 </script>

@@ -1,18 +1,14 @@
 <template>
   <el-popover
+    ref='popoverRef'
     :placement='placement'
-    :visible='visible'
+    :virtual-ref='virtualRef'
+    trigger='click'
+    virtual-triggering
   >
-    <template #reference>
-      <slot name='reference' />
-    </template>
-
     <template #default>
-      <column-operate v-if='visible' ref='columnOperateRef' :list='list' />
+      <column-operate ref='columnOperateRef' />
       <div class='popover-footer'>
-        <el-button size='small' @click='visible = false'>
-          取消
-        </el-button>
         <el-button type='primary' size='small' @click='onSubmit'>
           确定
         </el-button>
@@ -22,35 +18,34 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
-import { CustomColumnConfig } from '@/types';
+import { PropType, ref, Ref, unref } from 'vue';
 import ColumnOperate from './column-operate.vue';
+import { useTable } from '@/store/use-table';
+import type { PopoverInstance } from 'element-plus';
 
 defineProps({
   placement: {
     type: String as PropType<'top'| 'top-start'|'top-end'|'bottom'|'bottom-start'|'bottom-end'|'left'|'left-start'|'left-end'|'right'|'right-start'|'right-end'>,
     default: 'bottom'
+  },
+  virtualRef: {
+    type: Object as PropType<Ref<any>>,
+    default: undefined
   }
 });
 
-const emit = defineEmits(['submit']);
+const { updateCustomColumns } = useTable();
 
-const columnOperateRef = ref();
-const visible = ref(false);
-const list = ref<CustomColumnConfig[]>([]);
+const columnOperateRef = ref<InstanceType<typeof ColumnOperate>>();
+const popoverRef = ref<PopoverInstance>();
 
 const onSubmit = () => {
-  const list = columnOperateRef.value.getData();
-  emit('submit', list);
-  visible.value = false;
+  const list = columnOperateRef.value?.getData();
+  updateCustomColumns(list ?? []);
+  console.log(popoverRef.value?.popperRef);
+  // popoverRef.value?.popperRef?.delayHide?.();
+  // unref(popoverRef)?.popperRef?.delayHide?.();
 };
-
-const show = (l:CustomColumnConfig[]) => {
-  list.value = l;
-  visible.value = true;
-};
-
-defineExpose({ show });
 
 </script>
 

@@ -1,4 +1,4 @@
-import { VNode } from 'vue';
+import { Ref, VNode } from 'vue';
 
 export interface ColumnConfig {
   id: string,
@@ -74,7 +74,8 @@ export interface TableConfig {
   tableLayout?: 'fixed' | 'auto',
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean,
-  showSectionAlert?: boolean
+  showSectionAlert?: boolean,
+  customColumnVirtualRef?: Ref<any>
 }
 
 export interface CustomColumnConfig {

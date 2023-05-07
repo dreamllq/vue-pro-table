@@ -41,6 +41,7 @@
       </table-render>
     </div>
   </div>
+  <custom-column-pop v-if='ready' :virtual-ref='config.customColumnVirtualRef' />
 </template>
 
 <script setup lang="ts">
@@ -51,8 +52,9 @@ import type { TableInstance } from 'element-plus';
 import { TableConfig } from '@/types';
 import TableRender from '@/table-render.vue';
 import { cloneDeep } from 'lodash';
+import CustomColumnPop from './custom-column/custom-column-pop.vue';
 
-const { getCustomColumns, updateCustomColumns, setTableConfig, rowSelection } = useTable();
+const { setTableConfig, rowSelection } = useTable();
 
 const props = defineProps<{
   config: TableConfig,
@@ -144,8 +146,6 @@ onUnmounted(() => {
 });
 
 defineExpose({
-  getCustomColumns,
-  updateCustomColumns,
   getReserveSelection,
   setTableConfig,
   clearSelection,
