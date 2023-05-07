@@ -1,0 +1,23 @@
+{
+  "id": "4054010",
+  "name": "pro-table",
+  "font_family": "iconfont",
+  "css_prefix_text": "pro-table-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "4767014",
+      "name": "down",
+      "font_class": "down",
+      "unicode": "e7eb",
+      "unicode_decimal": 59371
+    },
+    {
+      "icon_id": "29391893",
+      "name": "holder",
+      "font_class": "holder",
+      "unicode": "e965",
+      "unicode_decimal": 59749
+    }
+  ]
+}

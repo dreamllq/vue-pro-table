@@ -5,14 +5,11 @@
     :virtual-ref='virtualRef'
     trigger='click'
     virtual-triggering
+    @before-enter='isShow = true'
+    @after-leave='isShow = false'
   >
     <template #default>
-      <column-operate ref='columnOperateRef' />
-      <div class='popover-footer'>
-        <el-button type='primary' size='small' @click='onSubmit'>
-          确定
-        </el-button>
-      </div>
+      <column-operate v-if='isShow' ref='columnOperateRef' />
     </template>
   </el-popover>
 </template>
@@ -20,7 +17,6 @@
 <script setup lang="ts">
 import { PropType, ref, Ref } from 'vue';
 import ColumnOperate from './column-operate.vue';
-import { useTable } from '@/store/use-table';
 import type { PopoverInstance } from 'element-plus';
 
 defineProps({
@@ -34,18 +30,11 @@ defineProps({
   }
 });
 
-const { updateCustomColumns } = useTable();
 
 const columnOperateRef = ref<InstanceType<typeof ColumnOperate>>();
 const popoverRef = ref<PopoverInstance>();
 
-const onSubmit = () => {
-  const list = columnOperateRef.value?.getData();
-  updateCustomColumns(list ?? []);
-  console.log(popoverRef.value?.popperRef);
-  // popoverRef.value?.popperRef?.delayHide?.();
-  // unref(popoverRef)?.popperRef?.delayHide?.();
-};
+const isShow = ref(false);
 
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div class='column-operate-item'>
     <div class='operate-icon'>
-      <el-icon><i-rank /></el-icon>
+      <i class='iconfont pro-table-icon-holder' />
     </div>
     <div class='operate-check'>
       <el-checkbox :disabled='disabled' :model-value='show' @update:model-value='onUpdateModelValue' />
@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { Rank as IRank } from '@element-plus/icons';
 
 defineProps<{
   show: boolean,
@@ -36,10 +35,15 @@ const onUpdateModelValue = (val: boolean) => {
 
   &.sortable-chosen{
     background-color: #F5F7FA;
+    border: 2px solid var(--el-color-primary);
+    border-radius: 2px;
   }
 
   .operate-icon{
     width: 30px;
+    font-size: 14px;
+    color: #666;
+    cursor: move;
   }
   
   .operate-check{

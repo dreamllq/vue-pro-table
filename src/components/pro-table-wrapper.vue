@@ -1,88 +1,64 @@
+
+
 <template>
-  <el-table
-    ref='tableRef'
-    :data='config.data'
-    :height='config.height'
-    :max-height='config.maxHeight'
-    :stripe='config.stripe'
-    :border='config.border'
-    :size='config.size'
-    :fit='config.fit'
-    :show-header='config.showHeader'
-    :highlight-current-row='config.highlightCurrentRow'
-    :current-row-key='config.currentRowKey'
-    :row-class-name='config.rowClassName'
-    :row-style='config.rowStyle'
-    :cell-class-name='config.cellClassName'
-    :cell-style='config.cellStyle'
-    :header-row-class-name='config.headerRowClassName'
-    :header-row-style='config.headerRowStyle'
-    :header-cell-class-name='config.headerCellClassName'
-    :header-cell-style='config.headerCellStyle'
-    :row-key='config.rowKey'
-    :empty-text='config.emptyText'
-    :default-expand-all='config.defaultExpandAll'
-    :expand-row-keys='config.expandRowKeys'
-    :default-sort='config.defaultSort'
-    :tooltip-effect='config.tooltipEffect'
-    :tooltip-options='config.tooltipOptions'
-    :show-summary='config.showSummary'
-    :sum-text='config.sumText'
-    :summary-method='config.summaryMethod'
-    :span-method='config.spanMethod'
-    :select-on-indeterminate='config.selectOnIndeterminate'
-    :indent='config.indent'
-    :lazy='config.lazy'
-    :load='config.load'
-    :tree-props='config.treeProps'
-    :table-layout='config.tableLayout'
-    :scrollbar-always-on='config.scrollbarAlwaysOn'
-    :flexible='config.flexible'
-    @select='onSelect'
-    @select-all='onSelectAll'
-    @selection-change='onSelectionChange'
-    @cell-mouse-enter='onCellMouseEnter'
-    @cell-mouse-leave='onCellMouseLeave'
-    @cell-click='onCellClick'
-    @cell-dblclick='onCellDblclick'
-    @cell-contextmenu='onCellContextmenu'
-    @row-click='onRowClick'
-    @row-contextmenu='onRowContextmenu'
-    @row-dblclick='onRowDblclick'
-    @header-click='onHeaderClick'
-    @header-contextmenu='onHeaderContextmenu'
-    @sort-change='onSortChange'
-    @filter-change='onFilterChange'
-    @current-change='onCurrentChange'
-    @header-dragend='onHeaderDragend'
-    @expand-change='onExpandChange'
-  >
-    <template v-for='columnConfig in columnConfigs' :key='columnConfig.id'>
-      <table-column-render :config='columnConfig' />
-    </template>
+  <div ref='hiddenItems' class='hidden'>
+    <slot /> 
+  </div>
+  <div class='pro-table'>
+    <div ref='sectionAlertRef' class='section-alert'>
+      <section-alert v-if='config.showSectionAlert' />
+    </div>
+    <div v-if='ready' class='table-main'>
+      <table-render
+        ref='tableRef'
+        :config='tableConfigProxy'
+        :section-alert-height='sectionAlertHeight'
+        @select='onSelect'
+        @select-all='onSelectAll'
+        @selection-change='onSelectionChange'
+        @cell-mouse-enter='onCellMouseEnter'
+        @cell-mouse-leave='onCellMouseLeave'
+        @cell-click='onCellClick'
+        @cell-dblclick='onCellDblclick'
+        @cell-contextmenu='onCellContextmenu'
+        @row-click='onRowClick'
+        @row-contextmenu='onRowContextmenu'
+        @row-dblclick='onRowDblclick'
+        @header-click='onHeaderClick'
+        @header-contextmenu='onHeaderContextmenu'
+        @sort-change='onSortChange'
+        @filter-change='onFilterChange'
+        @current-change='onCurrentChange'
+        @header-dragend='onHeaderDragend'
+        @expand-change='onExpandChange'>
+        <template #append>
+          <slot name='append' />
+        </template>
 
-    <template #append>
-      <slot name='append' />
-    </template>
-
-    <template #empty>
-      <slot name='empty' />
-    </template>
-  </el-table>
+        <template #empty>
+          <slot name='empty' />
+        </template>
+      </table-render>
+    </div>
+  </div>
+  <custom-column-pop v-if='ready' :virtual-ref='config.customColumnVirtualRef' />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useTable } from '@/store/use-table';
-import TableColumnRender from '@/table-column-render.tsx';
-import { TableConfig } from '@/types';
+import { onUnmounted, ref, onMounted, computed, watch } from 'vue';
+import SectionAlert from '@/components/section-alert/index.vue';
+import { clearTable, useTable } from '@/store/use-table';
 import type { TableInstance } from 'element-plus';
+import { TableConfig } from '@/types';
+import TableRender from './el-table-render/table-render.vue';
+import { cloneDeep } from 'lodash';
+import CustomColumnPop from '@/components/custom-column/custom-column-pop.vue';
 
-defineProps<{
+const { setTableConfig, rowSelection } = useTable();
+
+const props = defineProps<{
   config: TableConfig,
 }>();
-
-const { columnConfigs } = useTable();
 
 const emit = defineEmits([
   'select',
@@ -102,10 +78,33 @@ const emit = defineEmits([
   'filter-change',
   'current-change',
   'header-dragend',
-  'expand-change'
+  'expand-change',
+  'reserve-selection-change'
 ]);
 
-const tableRef = ref<TableInstance>();
+const sectionAlertRef = ref();
+const tableRef = ref<InstanceType<typeof TableRender>>();
+
+const sectionAlertHeight = ref(0);
+const ready = ref(false);
+
+const tableConfigProxy = computed(() => {
+  let height = props.config.height;
+
+  if (height && props.config.showSectionAlert) {
+    height = Number(height) - sectionAlertHeight.value;
+  }
+
+  return {
+    ...props.config,
+    height
+  };
+});
+
+onMounted(() => {
+  sectionAlertHeight.value = sectionAlertRef.value.clientHeight;
+  ready.value = true;
+});
 
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
@@ -126,6 +125,10 @@ const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
+watch(rowSelection, () => {
+  emit('reserve-selection-change', cloneDeep(rowSelection));
+});
+
 const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
 const toggleRowSelection: TableInstance['toggleRowSelection'] = (row, selected) => tableRef.value!.toggleRowSelection(row, selected);
@@ -140,7 +143,16 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => tableRef.value!
 const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
+const getReserveSelection = () => cloneDeep(rowSelection);
+
+
+onUnmounted(() => {
+  clearTable();
+});
+
 defineExpose({
+  getReserveSelection,
+  setTableConfig,
   clearSelection,
   getSelectionRows,
   toggleRowSelection,
@@ -155,9 +167,12 @@ defineExpose({
   setScrollTop,
   setScrollLeft
 });
-
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.pro-table{
+  .hidden{
+    display: none;
+  }
+}
 </style>

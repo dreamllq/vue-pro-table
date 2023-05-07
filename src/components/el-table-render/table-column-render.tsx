@@ -1,7 +1,7 @@
 import { PropType, defineComponent } from 'vue';
 import { ColumnConfig } from '@/types';
-import ReserveSelectionColumnDefaultSlot from '@/reserve-selection-column/default-slot.vue';
-import ReserveSelectionColumnHeaderSlot from '@/reserve-selection-column/header-slot.vue';
+import ReserveSelectionColumnDefaultSlot from '@/components/reserve-selection-column/default-slot.vue';
+import ReserveSelectionColumnHeaderSlot from '@/components/reserve-selection-column/header-slot.vue';
 
 export default defineComponent({
   props: {

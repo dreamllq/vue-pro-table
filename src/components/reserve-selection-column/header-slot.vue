@@ -3,9 +3,7 @@
     <el-checkbox :model-value='checked' :indeterminate='indeterminate' @change='onChange' />
     <el-dropdown trigger='click' @command='onCommand'>
       <span class='el-dropdown-link'>
-        <el-icon>
-          <arrow-down />
-        </el-icon>
+        <i class='iconfont pro-table-icon-down' />
       </span>
       <template #dropdown>
         <el-dropdown-menu>
@@ -23,7 +21,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ArrowDown } from '@element-plus/icons-vue';
 import { useTable } from '@/store/use-table';
 import { get, intersection, findIndex } from 'lodash';
 
@@ -98,7 +95,10 @@ const deleteRows = () => {
 <style scoped lang="scss">
 .el-dropdown-link{
   line-height: 32px;
-  margin-left: 8px;
+  margin-left: 4px;
   cursor: pointer;
+  i{
+    font-size: 14px;
+  }
 }
 </style>

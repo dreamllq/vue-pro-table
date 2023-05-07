@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import ProTableWrapper from '@/pro-table-wrapper.vue';
+import ProTableWrapper from './pro-table-wrapper.vue';
 import { provide, withDefaults, ref, watchPostEffect, Ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import type { TableInstance } from 'element-plus';

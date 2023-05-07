@@ -8,6 +8,7 @@
     <draggable 
       v-model='customColumns' 
       group='people' 
+      handle='.operate-icon'
       item-key='id'>
       <template #item='{element}'>
         <column-operate-item
@@ -23,18 +24,18 @@
 <script setup lang="ts">
 import { CustomColumnConfig } from '@/types';
 import ColumnOperateItem from './column-operate-item.vue';
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash';
 import { useTable } from '@/store/use-table';
 
-const { columns } = useTable();
+const { columns, updateCustomColumns } = useTable();
 
-const customColumns = ref<CustomColumnConfig[]>([]);
+const customColumns = ref<CustomColumnConfig[]>(cloneDeep(columns.value));
 
-watchEffect(() => {
-  customColumns.value = cloneDeep(columns.value);
-});
+watch(() => customColumns.value, (val) => {
+  updateCustomColumns(cloneDeep(val));
+}, { deep: true });
 
 
 const allCheckState = computed(() => {
@@ -58,9 +59,6 @@ const onUpdateModelValue = (element, val) => {
   element.show = val;
 };
 
-const getData:()=>CustomColumnConfig[] = () => cloneDeep(customColumns.value);
-
-defineExpose({ getData });
 </script>
 
 <style scoped>
