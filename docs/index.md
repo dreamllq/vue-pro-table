@@ -182,13 +182,14 @@ const onSubmit = (list)=>{
 
 | 名称 | 描述 | 类型 |
 | ---- | ---- | ---- |
-| getReserveSelection | 获取跨页多选信息,ProTableColumn.type='reserveSelection' | () => \{ rows: any[]; type: "reverse" | "positive"; \} |
+| getReserveSelection | 获取选择信息,ProTableColumn.type='reserveSelection' | () => \{ rows: any[]; type: "reverse" \| "positive"; \} ；positive 为正选；reverse为反选 |
 
 ### FormGrid Events
 
 | 事件名 | 说明 | 类型 |
 | ---- | ---- | ---- |
-| reserve-selection-change | 跨页多选变化 | \{ rows: any[]; type: "reverse" | "positive"; \} |
+| reserve-selection-change | 多选变化(支持全选排除) | \{ rows: any[]; type: "reverse" \| "positive"; \} |
+| selection-change | 选择变化 | \{ rows: any[]; type: "positive"; \} |
 
 
 ## 较 el-table-column 变更的 Api

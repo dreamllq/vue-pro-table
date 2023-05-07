@@ -148,7 +148,7 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => tableRef.value!
 const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
-const getReserveSelection = () => cloneDeep(rowSelection);
+const getRowSelection = () => cloneDeep(rowSelection);
 
 
 onUnmounted(() => {
@@ -156,7 +156,7 @@ onUnmounted(() => {
 });
 
 defineExpose({
-  getReserveSelection,
+  getRowSelection,
   setTableConfig,
   clearSelection,
   getSelectionRows,

@@ -138,10 +138,10 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => proTableWrapper
 const setScrollTop: TableInstance['setScrollTop'] = (top) => proTableWrapperRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => proTableWrapperRef.value!.setScrollLeft(left);
 
-const getReserveSelection = () => proTableWrapperRef.value!.getReserveSelection();
+const getRowSelection = () => proTableWrapperRef.value!.getRowSelection();
 
 defineExpose({
-  getReserveSelection,
+  getRowSelection,
   clearSelection,
   getSelectionRows,
   toggleRowSelection,

@@ -24,7 +24,7 @@
     </AutoPagination>
   </div>
   <div>
-    <el-button @click="getReserveSelection">获取选择记录</el-button>
+    <el-button @click="getRowSelection">获取选择记录</el-button>
   </div>
 </template>
 
@@ -58,8 +58,8 @@ const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = as
   }
 }
 
-const getReserveSelection = ()=>{
-  console.log(tableRef.value.getReserveSelection())
+const getRowSelection = ()=>{
+  console.log(tableRef.value.getRowSelection())
 }
 
 const onSetting = ()=>{
