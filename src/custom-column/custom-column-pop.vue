@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref, Ref, unref } from 'vue';
+import { PropType, ref, Ref } from 'vue';
 import ColumnOperate from './column-operate.vue';
 import { useTable } from '@/store/use-table';
 import type { PopoverInstance } from 'element-plus';
