@@ -2,29 +2,29 @@
   <div>
     <el-checkbox v-model="showSectionAlert">showSectionAlert</el-checkbox>
   </div>
-    <div>
-      <CustomColumnPop ref="customColumnPopRef" @submit="onSubmit">
-        <template #reference>
-          <el-button :icon="Setting" @click="onSetting"/>
-        </template>
-      </CustomColumnPop>
-    </div>
+  <div>
+    <CustomColumnPop ref="customColumnPopRef" @submit="onSubmit">
+      <template #reference>
+        <el-button :icon="Setting" @click="onSetting"/>
+      </template>
+    </CustomColumnPop>
+  </div>
   <div style="height: 600px;" class="reset">
     <AutoPagination :fetch-data="fetchData" ref="pagination" auto-init>
       <template #default="{data, indexMethod}">
         <AutoHeightWrapper>
-        <template #default="{size}">
-          <ProTable :data="data" rowKey="id" :height="size.height" :showSectionAlert="showSectionAlert" ref="tableRef">
-            <ProTableColumn type="selection" label="选择" prop="selection"> </ProTableColumn>
-            <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection"> </ProTableColumn>
-            <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
-            <ProTableColumn prop="id" label="id"></ProTableColumn>
-            <ProTableColumn prop="b" label="bb" disabled>
-              <template #default="{row}">{{ row }}</template>
-            </ProTableColumn>
-          </ProTable>
-        </template>
-      </AutoHeightWrapper>  
+          <template #default="{size}">
+            <ProTable :data="data" rowKey="id" :height="size.height" :showSectionAlert="showSectionAlert" ref="tableRef">
+              <ProTableColumn type="selection" label="选择" prop="selection"> </ProTableColumn>
+              <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection"> </ProTableColumn>
+              <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
+              <ProTableColumn prop="id" label="id"></ProTableColumn>
+              <ProTableColumn prop="b" label="bb" disabled>
+                <template #default="{row}">{{ row }}</template>
+              </ProTableColumn>
+            </ProTable>
+          </template>
+        </AutoHeightWrapper>  
       </template>
     </AutoPagination>
   </div>
