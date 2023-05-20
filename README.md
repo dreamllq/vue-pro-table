@@ -121,6 +121,7 @@ const onSubmit = (list)=>{
 | 属性名 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
 | showSelectionAlert | 是否显示选项提示 | boolean | false |
+| renderTableType | table渲染类型 | string | 'el-table' | 'ag-grid' |
 
 ### ProTable Exposes
 
@@ -143,3 +144,12 @@ const onSubmit = (list)=>{
 | 属性名 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
 | type | 新增跨页多选类型 | reserveSelection | - |
+
+## el-table 和 ag-grid 支持对比
+
+| 功能 | el-table | ag-grid |
+| ---- | ---- | ---- |
+| 数据展示 | 有 | 有 |
+| 自定义列 | 有 | 无 |
+| 行多选 | 有 | 无 |
+| 自定义列调整 | 有 | 有 |

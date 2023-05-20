@@ -50,7 +50,8 @@ import SectionAlert from '@/components/section-alert/index.vue';
 import { useTable } from '@/use-table';
 import type { TableInstance } from 'element-plus';
 import { TableConfig } from '@/types';
-import TableRender from './el-table-render/table-render.vue';
+import ElTableRender from './el-table-render/table-render.vue';
+import AgGridRender from './ag-grid-render/table-render.vue';
 import { cloneDeep } from 'lodash';
 import CustomColumnPop from '@/components/custom-column/custom-column-pop.vue';
 
@@ -59,6 +60,14 @@ const { setTableConfig, rowSelection } = useTable()!;
 const props = defineProps<{
   config: TableConfig,
 }>();
+
+const TableRender = computed(() => {
+  const comps = {
+    'el-table': ElTableRender,
+    'ag-grid': AgGridRender
+  };
+  return comps[props.config.renderTableType];
+});
 
 const emit = defineEmits([
   'select',
@@ -178,6 +187,20 @@ defineExpose({
 .pro-table{
   .hidden{
     display: none;
+  }
+}
+
+.pro-table{
+  display: flex;
+  flex-direction: column;
+
+  .section-alert{
+    flex: none;
+  }
+
+  .table-main{
+    flex: 1;
+    overflow: hidden;
   }
 }
 </style>
