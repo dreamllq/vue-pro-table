@@ -29,7 +29,8 @@ export default defineConfig({
         'rxjs',
         '@vueuse/core',
         'vuedraggable',
-        '@element-plus/icons'
+        '@element-plus/icons',
+        'ag-grid-vue3'
       ],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
@@ -41,7 +42,8 @@ export default defineConfig({
           'rxjs': 'rxjs',
           '@vueuse/core': '@vueuse/core',
           'vuedraggable': 'vuedraggable',
-          '@element-plus/icons': '@element-plus/icons'
+          '@element-plus/icons': '@element-plus/icons',
+          'ag-grid-vue3': 'ag-grid-vue3'
         },
         exports: 'named'
       }

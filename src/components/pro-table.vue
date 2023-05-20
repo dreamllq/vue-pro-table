@@ -26,8 +26,7 @@
 
 <script setup lang="ts">
 import ProTableWrapper from './pro-table-wrapper.vue';
-import { provide, withDefaults, ref, watchPostEffect, Ref } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
+import { withDefaults, ref, watchPostEffect, Ref } from 'vue';
 import type { TableInstance } from 'element-plus';
 import { useProvideTable } from '@/use-table';
 

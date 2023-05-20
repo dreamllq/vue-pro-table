@@ -66,7 +66,7 @@ const TableRender = computed(() => {
     'el-table': ElTableRender,
     'ag-grid': AgGridRender
   };
-  return comps[props.config.renderTableType];
+  return comps[props.config.renderTableType!];
 });
 
 const emit = defineEmits([
@@ -92,7 +92,7 @@ const emit = defineEmits([
 ]);
 
 const sectionAlertRef = ref();
-const tableRef = ref<InstanceType<typeof TableRender>>();
+const tableRef = ref<any>();
 
 const sectionAlertHeight = ref(0);
 const ready = ref(false);

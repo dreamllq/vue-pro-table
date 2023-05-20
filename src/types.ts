@@ -76,7 +76,7 @@ export interface TableConfig {
   flexible?:boolean,
   showSelectionAlert?: boolean,
   customColumnVirtualRef?: Ref<any>,
-  renderTableType:'el-table' | 'ag-grid'
+  renderTableType?:'el-table' | 'ag-grid'
 }
 
 export interface CustomColumnConfig {

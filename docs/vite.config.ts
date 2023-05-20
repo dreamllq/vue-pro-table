@@ -19,7 +19,8 @@ export default defineConfig({
       'lodash',
       'vue',
       'uuid',
-      'moment'
+      'moment',
+      'ag-grid-vue3'
     ] 
   }
 });
