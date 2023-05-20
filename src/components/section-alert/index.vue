@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 
-const { rowSelection } = useTable();
+const { rowSelection } = useTable()!;
 
 const onClear = () => {
   rowSelection.rows = [];

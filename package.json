@@ -34,6 +34,7 @@
     "@vitejs/plugin-vue": "^4.1.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "@vueuse/core": "^10.1.0",
+    "ag-grid-community": "^29.3.5",
     "element-plus": "^2.3.4",
     "eslint": "^8.39.0",
     "eslint-plugin-vue": "^9.11.0",
@@ -56,12 +57,12 @@
   },
   "peerDependencies": {
     "@element-plus/icons": "*",
+    "@vueuse/core": "*",
     "element-plus": "2.x",
     "lodash": "*",
     "uuid": "*",
     "vue": "3.x",
-    "vuedraggable": "4.x",
-    "@vueuse/core": "*"
+    "vuedraggable": "4.x"
   },
   "author": {
     "name": "lvliqi",
@@ -75,5 +76,8 @@
   "keywords": [
     "vue",
     "vue3"
-  ]
+  ],
+  "dependencies": {
+    "ag-grid-vue3": "^29.3.5"
+  }
 }

@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 import { get, intersection, findIndex } from 'lodash';
 
 const COMMAND_POSITIVE = 'positiveModel';
@@ -29,7 +29,7 @@ const COMMAND_REVERSE = 'reverseModel';
 
 defineProps<{ column: any, index: number }>();
 
-const { rowSelection, tableConfig } = useTable();
+const { rowSelection, tableConfig } = useTable()!;
 
 const intersectionRowKeys = computed(() => {
   const keys = tableConfig.value.data?.map(item => get(item, tableConfig.value.rowKey));

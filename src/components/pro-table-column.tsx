@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { defineComponent, onMounted, getCurrentInstance, onUnmounted, PropType, watch, computed } from 'vue';
 import { ColumnConfig } from '@/types';
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 
 export default defineComponent({
   props: {
@@ -132,7 +132,7 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     const instance = getCurrentInstance();
-    const { insertConfig, removeConfig, updateConfig } = useTable();
+    const { insertConfig, removeConfig, updateConfig } = useTable()!;
     const id = uuidv4();
     
     const config = computed(() => ({ 

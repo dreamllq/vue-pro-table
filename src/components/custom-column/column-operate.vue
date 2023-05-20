@@ -27,9 +27,9 @@ import ColumnOperateItem from './column-operate-item.vue';
 import { ref, computed, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash';
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 
-const { columns, updateCustomColumns } = useTable();
+const { columns, updateCustomColumns } = useTable()!;
 
 const customColumns = ref<CustomColumnConfig[]>(cloneDeep(columns.value));
 

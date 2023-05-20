@@ -10,10 +10,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 import SelectionRowsTable from './selection-rows-table.vue';
 
-const { rowSelection } = useTable();
+const { rowSelection } = useTable()!;
 const title = computed(() => {
   if (rowSelection.type === 'positive') {
     return '选中记录';

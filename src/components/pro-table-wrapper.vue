@@ -45,16 +45,16 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import SectionAlert from '@/components/section-alert/index.vue';
-import { clearTable, useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 import type { TableInstance } from 'element-plus';
 import { TableConfig } from '@/types';
 import TableRender from './el-table-render/table-render.vue';
 import { cloneDeep } from 'lodash';
 import CustomColumnPop from '@/components/custom-column/custom-column-pop.vue';
 
-const { setTableConfig, rowSelection } = useTable();
+const { setTableConfig, rowSelection } = useTable()!;
 
 const props = defineProps<{
   config: TableConfig,
@@ -151,9 +151,9 @@ const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.
 const getRowSelection = () => cloneDeep(rowSelection);
 
 
-onUnmounted(() => {
-  clearTable();
-});
+// onUnmounted(() => {
+//   clearTable();
+// });
 
 defineExpose({
   getRowSelection,

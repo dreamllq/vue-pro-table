@@ -4,12 +4,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 import { get, findIndex } from 'lodash';
 
 const props = defineProps<{ row:any, column:any, index:number }>();
 
-const { rowSelection, tableConfig } = useTable();
+const { rowSelection, tableConfig } = useTable()!;
 
 const currentKey = computed(() => get(props.row, tableConfig.value.rowKey));
 

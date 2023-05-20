@@ -1,4 +1,4 @@
-import { ref, inject, computed, reactive, Ref } from 'vue';
+import { ref, computed, reactive, Ref } from 'vue';
 import { ColumnConfig, CustomColumnConfig, TableConfig } from '@/types';
 import { findIndex, cloneDeep, merge } from 'lodash';
 import { createInjectionState } from '@vueuse/shared';

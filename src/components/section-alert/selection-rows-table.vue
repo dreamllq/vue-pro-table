@@ -3,11 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 import TableRender from '@/components/el-table-render/table-render.vue';
 import { reactive } from 'vue';
 
-const { rowSelection } = useTable();
+const { rowSelection } = useTable()!;
 const config = reactive({ data: rowSelection.rows });
 
 </script>

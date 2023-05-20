@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useTable } from '@/store/use-table';
+import { useTable } from '@/use-table';
 import TableColumnRender from './table-column-render.tsx';
 import { TableConfig } from '@/types';
 import type { TableInstance } from 'element-plus';
@@ -82,7 +82,7 @@ defineProps<{
   config: TableConfig,
 }>();
 
-const { columnConfigs } = useTable();
+const { columnConfigs } = useTable()!;
 
 const emit = defineEmits([
   'select',
