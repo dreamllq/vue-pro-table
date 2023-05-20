@@ -1,7 +1,7 @@
 {
   "name": "lc-vue-pro-table",
   "description": "vue3高级表格",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "type": "module",
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
