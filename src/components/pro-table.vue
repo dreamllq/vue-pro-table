@@ -73,11 +73,13 @@ const props = withDefaults(defineProps<{
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean,
   showSelectionAlert?: boolean,
-  customColumnVirtualRef?: Ref<any>
+  customColumnVirtualRef?: Ref<any>,
+  renderTableType?:'el-table' | 'ag-grid'
 }>(), {
   fit: true,
   showHeader: true,
-  selectOnIndeterminate: true
+  selectOnIndeterminate: true,
+  renderTableType: 'el-table'
 }); 
 
 const emit = defineEmits([
@@ -162,17 +164,5 @@ defineExpose({
 </script>
 
 <style scoped lang="scss">
-.pro-table{
-  display: flex;
-  flex-direction: column;
 
-  .section-alert{
-    flex: none;
-  }
-
-  .table-main{
-    flex: 1;
-    overflow: hidden;
-  }
-}
 </style>

@@ -75,7 +75,8 @@ export interface TableConfig {
   scrollbarAlwaysOn?: boolean,
   flexible?:boolean,
   showSelectionAlert?: boolean,
-  customColumnVirtualRef?: Ref<any>
+  customColumnVirtualRef?: Ref<any>,
+  renderTableType:'el-table' | 'ag-grid'
 }
 
 export interface CustomColumnConfig {
