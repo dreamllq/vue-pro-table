@@ -177,6 +177,7 @@ const onSubmit = (list)=>{
 | 属性名 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
 | showSelectionAlert | 是否显示选项提示 | boolean | false |
+| renderTableType | table渲染类型 | string | 'el-table' | 'ag-grid' |
 
 ### ProTable Exposes
 
