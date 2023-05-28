@@ -4,6 +4,7 @@
       <el-button :icon="Setting" ref="settingRef"/>
     </div>
     <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef" renderTableType="ag-grid">
+      <ProTableColumn prop="id" label="id" fixed="right"></ProTableColumn>
       <ProTableColumn prop="a" label="aa"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
         <template #default="{row}">{{ row }}</template>

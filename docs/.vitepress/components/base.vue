@@ -7,7 +7,7 @@
       <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection">
       </ProTableColumn>
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
-      <ProTableColumn prop="a" label="aa"></ProTableColumn>
+      <ProTableColumn prop="a" label="aa" fixed="right"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
         <template #default="{row}">{{ row }}</template>
       </ProTableColumn>

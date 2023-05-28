@@ -31,7 +31,8 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
   field: columnConfig.prop,
   cellRenderer: columnConfig.defaultRender ? CellRender : undefined,
   cellRendererParams: { index },
-  suppressMovable: true
+  suppressMovable: true,
+  lockPosition: columnConfig.fixed ?? undefined
 })));
 
 </script>
