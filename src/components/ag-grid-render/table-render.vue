@@ -14,6 +14,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridVue } from 'ag-grid-vue3';
 import { useTable } from '@/use-table';
 import { TableConfig } from '@/types';
+import CellRender from './cell-render.tsx';
 
 const props = defineProps<{
   config: TableConfig,
@@ -25,9 +26,11 @@ const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 
 
 const style = computed(() => ({ height: `${props.config.height || defaultTableHeight.value}px` }));
 
-const columnDefs = computed(() => columnConfigs.value.map(columnConfig => ({
+const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => ({
   headerName: columnConfig.label,
-  field: columnConfig.prop
+  field: columnConfig.prop,
+  cellRenderer: columnConfig.defaultRender ? CellRender : undefined,
+  cellRendererParams: { index }
 })));
 
 </script>

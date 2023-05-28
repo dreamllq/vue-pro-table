@@ -8,6 +8,8 @@ import Base from '@components/base.vue'
 import WithPagination from '@components/with-pagination.vue'
 import TypeSelection from '@components/type-selection.vue'
 
+import AgBase from '@components/ag-base.vue'
+
 export default {
   ...DefaultTheme,
   // Layout,
@@ -17,5 +19,6 @@ export default {
     app.component('Base', Base)
     app.component('WithPagination', WithPagination)
     app.component('TypeSelection', TypeSelection)
+    app.component('AgBase', AgBase)
   }
 };
