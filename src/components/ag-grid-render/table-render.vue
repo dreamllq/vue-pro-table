@@ -30,7 +30,8 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
   headerName: columnConfig.label,
   field: columnConfig.prop,
   cellRenderer: columnConfig.defaultRender ? CellRender : undefined,
-  cellRendererParams: { index }
+  cellRendererParams: { index },
+  suppressMovable: true
 })));
 
 </script>
