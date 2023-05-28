@@ -3,7 +3,8 @@
     <div>
       <el-button :icon="Setting" ref="settingRef"/>
     </div>
-    <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef" renderTableType="ag-grid">
+    <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef" renderTableType="ag-grid" @selection-change="onSelectionChange">
+      <ProTableColumn type="selection" label="选择" prop="reserveSelection"> </ProTableColumn>
       <ProTableColumn prop="id" label="id" fixed="right"></ProTableColumn>
       <ProTableColumn prop="a" label="aa"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
@@ -40,6 +41,10 @@ const onSetting = ()=>{
 
 const onSubmit = (list)=>{
   proTableRef.value.updateCustomColumns(list)
+}
+
+const onSelectionChange = (rows)=>{
+  console.log(rows)
 }
 </script>
 

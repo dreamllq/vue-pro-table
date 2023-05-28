@@ -3,7 +3,7 @@
     <div>
       <el-button :icon="Setting" ref="settingRef"/>
     </div>
-    <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef">
+    <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange">
       <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection">
       </ProTableColumn>
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
@@ -42,6 +42,10 @@ const onSetting = ()=>{
 
 const onSubmit = (list)=>{
   proTableRef.value.updateCustomColumns(list)
+}
+
+const onSelectionChange = (rows)=>{
+  console.log(rows)
 }
 </script>
 

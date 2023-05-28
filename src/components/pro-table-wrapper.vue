@@ -87,8 +87,7 @@ const emit = defineEmits([
   'filter-change',
   'current-change',
   'header-dragend',
-  'expand-change',
-  'reserve-selection-change'
+  'expand-change'
 ]);
 
 const sectionAlertRef = ref();
@@ -121,7 +120,7 @@ const onSelectionChange = (...args: any[]) => {
   const selections = args[0];
   rowSelection.rows = cloneDeep(selections);
   rowSelection.type = 'positive';
-  emit('selection-change', cloneDeep(rowSelection));
+  // emit('selection-change', cloneDeep(rowSelection));
 };
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
 const onCellMouseLeave = (...args: any[]) => emit('cell-mouse-leave', ...args);
@@ -140,7 +139,7 @@ const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
 watch(rowSelection, () => {
-  emit('reserve-selection-change', cloneDeep(rowSelection));
+  emit('selection-change', cloneDeep(rowSelection));
 });
 
 const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
