@@ -157,7 +157,7 @@ const onSubmit = (list)=>{
 ## TODO
 
 - [ ] 支持 ag-grid 按需加载
-- [*] 支持 ag-grid 自定义单元格
+- [x] 支持 ag-grid 自定义单元格
 - [ ] 支持 ag-grid 行多选
 - [ ] 支持 ag-grid 行反向多选
 - [ ] 支持 ag-grid 排序
