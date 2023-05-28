@@ -1,7 +1,13 @@
-import { PropType, defineComponent, ref, watch, nextTick, computed } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useTable } from '@/use-table';
 
 export default defineComponent({
+  props: {
+    params: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   setup(props) {
     const { columnConfigs } = useTable()!;
     const scope = computed(() => ({
