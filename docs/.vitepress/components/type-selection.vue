@@ -11,7 +11,7 @@
       <template #default="{data, indexMethod}">
         <AutoHeightWrapper>
           <template #default="{size}">
-            <ProTable :data="data" rowKey="id" :height="size.height" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange">
+            <ProTable :data="data" rowKey="id" :height="size.height" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
               <ProTableColumn type="selection" label="选择" prop="reserveSelection" :reserveSelection="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="index" label="c" prop="c" ></ProTableColumn>
               <ProTableColumn prop="id" label="id"></ProTableColumn>
@@ -65,7 +65,11 @@ const getRowSelection = ()=>{
 }
 
 const onSelectionChange = (rowSelection)=>{
-  console.log(rowSelection)
+  console.log('onSelectionChange', rowSelection)
+}
+
+const onRowSelectionChange = (rowSelection)=>{
+  console.log('onRowSelectionChange', rowSelection)
 }
 
 </script>

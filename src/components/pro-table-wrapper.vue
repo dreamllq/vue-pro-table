@@ -87,7 +87,8 @@ const emit = defineEmits([
   'filter-change',
   'current-change',
   'header-dragend',
-  'expand-change'
+  'expand-change',
+  'row-selection-change'
 ]);
 
 const sectionAlertRef = ref();
@@ -117,10 +118,13 @@ onMounted(() => {
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
 const onSelectionChange = (...args: any[]) => {
+  emit('selection-change', ...args);
   const selections = args[0];
-  rowSelection.rows = cloneDeep(selections);
+  rowSelection.rows.splice(0, rowSelection.rows.length);
+  selections.forEach(selection => {
+    rowSelection.rows.push(selection);
+  });
   rowSelection.type = 'positive';
-  // emit('selection-change', cloneDeep(rowSelection));
 };
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
 const onCellMouseLeave = (...args: any[]) => emit('cell-mouse-leave', ...args);
@@ -138,9 +142,13 @@ const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
-watch(rowSelection, () => {
-  emit('selection-change', cloneDeep(rowSelection));
-});
+watch(() => rowSelection, () => {
+  const rows = tableRef.value!.getSelectionRows();
+  if (rows.length !== 0 && rowSelection.rows.length === 0) {
+    tableRef.value!.clearSelection();
+  }
+  emit('row-selection-change', cloneDeep(rowSelection));
+}, { deep: true });
 
 const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
@@ -157,11 +165,6 @@ const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.set
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
 const getRowSelection = () => cloneDeep(rowSelection);
-
-
-// onUnmounted(() => {
-//   clearTable();
-// });
 
 defineExpose({
   getRowSelection,

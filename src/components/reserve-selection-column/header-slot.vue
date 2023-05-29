@@ -20,16 +20,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useTable } from '@/use-table';
 import { get, intersection, findIndex } from 'lodash';
 
 const COMMAND_POSITIVE = 'positiveModel';
 const COMMAND_REVERSE = 'reverseModel';
 
-defineProps<{ column: any, index: number }>();
+const props = defineProps<{ column: any, index: number }>();
 
 const { rowSelection, tableConfig } = useTable()!;
+
+watch(() => tableConfig.value.data, () => {
+  if (props.column.reserveSelection === false) {
+    rowSelection.rows.splice(0, rowSelection.rows.length);
+  }
+}, { deep: true });
 
 const intersectionRowKeys = computed(() => {
   const keys = tableConfig.value.data?.map(item => get(item, tableConfig.value.rowKey));

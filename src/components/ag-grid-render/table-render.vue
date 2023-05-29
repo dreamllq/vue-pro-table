@@ -6,12 +6,13 @@
     :row-data='config.data'
     row-selection='multiple'
     @grid-ready='onGridReady'
+    @pagination-changed='onPaginationChanged'
     @selection-changed='onSelectionChanged'
   />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridVue } from 'ag-grid-vue3';
@@ -46,14 +47,34 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
 })));
 
 const onGridReady = (params) => {
+  console.log('grid-ready');
+  
   gridApi = params.api;
   gridColumnApi = params.columnApi;
 };
 
+const onPaginationChanged = (params) => {
+  console.log('onPaginationChanged', params);
+};
+
 const onSelectionChanged = () => {
-  var selectedRows = gridApi!.getSelectedRows();
+  const selectedRows = gridApi!.getSelectedRows();
   emit('selection-change', selectedRows);
 };
+
+const clearSelection = () => {
+  gridApi!.deselectAll();
+};
+
+const getSelectionRows = () => {
+  const selectedRows = gridApi!.getSelectedRows();
+  return selectedRows;
+};
+
+defineExpose({
+  clearSelection,
+  getSelectionRows 
+});
 
 </script>
 
