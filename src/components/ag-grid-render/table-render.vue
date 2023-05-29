@@ -4,10 +4,8 @@
     class='ag-theme-alpine'
     :column-defs='columnDefs'
     :row-data='config.data'
-    row-selection='multiple'
+    row-selection='single'
     @grid-ready='onGridReady'
-    @pagination-changed='onPaginationChanged'
-    @selection-changed='onSelectionChanged'
   />
 </template>
 
@@ -19,6 +17,7 @@ import { AgGridVue } from 'ag-grid-vue3';
 import { useTable } from '@/use-table';
 import { TableConfig } from '@/types';
 import CellRender from './cell-render.tsx';
+import SelectionCellRender from './selection-column/cell-render.vue';
 
 const props = defineProps<{
   config: TableConfig,
@@ -35,31 +34,26 @@ const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 
 
 const style = computed(() => ({ height: `${props.config.height || defaultTableHeight.value}px` }));
 
-const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => ({
-  headerName: columnConfig.label,
-  field: columnConfig.prop,
-  cellRenderer: columnConfig.defaultRender ? CellRender : undefined,
-  cellRendererParams: { index },
-  suppressMovable: true,
-  lockPosition: columnConfig.fixed ?? undefined,
-  checkboxSelection: columnConfig.type === 'selection',
-  headerCheckboxSelection: columnConfig.type === 'selection'
-})));
+const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
+
+  let cellRenderer:any = undefined;
+
+  if (columnConfig.defaultRender) cellRenderer = CellRender;
+  if (columnConfig.type === 'selection') cellRenderer = SelectionCellRender;
+
+  return {
+    headerName: columnConfig.label,
+    field: columnConfig.prop,
+    cellRenderer: cellRenderer,
+    cellRendererParams: { index },
+    suppressMovable: true,
+    lockPosition: columnConfig.fixed ?? undefined
+  };
+}));
 
 const onGridReady = (params) => {
-  console.log('grid-ready');
-  
   gridApi = params.api;
   gridColumnApi = params.columnApi;
-};
-
-const onPaginationChanged = (params) => {
-  console.log('onPaginationChanged', params);
-};
-
-const onSelectionChanged = () => {
-  const selectedRows = gridApi!.getSelectedRows();
-  emit('selection-change', selectedRows);
 };
 
 const clearSelection = () => {
