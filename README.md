@@ -133,8 +133,7 @@ const onSubmit = (list)=>{
 
 | 事件名 | 说明 | 类型 |
 | ---- | ---- | ---- |
-| reserve-selection-change | 多选变化(支持全选排除) | \{ rows: any[]; type: "reverse" \| "positive"; \} |
-| selection-change | 选择变化 | \{ rows: any[]; type: "positive"; \} |
+| row-selection-change | 多选变化(支持全选排除) | \{ rows: any[]; type: "reverse" \| "positive"; \} |
 
 
 ## 较 el-table-column 变更的 Api
