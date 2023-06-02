@@ -18,6 +18,7 @@ import { useTable } from '@/use-table';
 import { TableConfig } from '@/types';
 import CellRender from './cell-render.tsx';
 import SelectionCellRender from './selection-column/cell-render.vue';
+import SelectionCustomHeader from './selection-column/custom-header';
 
 const props = defineProps<{
   config: TableConfig,
@@ -36,10 +37,14 @@ const style = computed(() => ({ height: `${props.config.height || defaultTableHe
 
 const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
 
-  let cellRenderer:any = undefined;
+  let cellRenderer: any = undefined;
+  let customHeader: any = undefined;
 
   if (columnConfig.defaultRender) cellRenderer = CellRender;
-  if (columnConfig.type === 'selection') cellRenderer = SelectionCellRender;
+  if (columnConfig.type === 'selection') {
+    cellRenderer = SelectionCellRender;
+    customHeader = SelectionCustomHeader;
+  }
 
   return {
     headerName: columnConfig.label,
@@ -47,7 +52,8 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
     cellRenderer: cellRenderer,
     cellRendererParams: { index },
     suppressMovable: true,
-    lockPosition: columnConfig.fixed ?? undefined
+    lockPosition: columnConfig.fixed ?? undefined,
+    headerComponent: customHeader
   };
 }));
 
