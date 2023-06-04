@@ -14,8 +14,18 @@
             <ProTable :data="data" rowKey="id" :height="size.height" renderTableType="ag-grid" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
               <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection" :reserveSelection="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="selection" label="选择" prop="reserveSelection1" :reserveSelection="reserveSelection"></ProTableColumn>
-              <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
-              <ProTableColumn prop="d" label="d" >
+              <ProTableColumn type="index" label="csdfasdfasdfasdfasdfsd" prop="c"></ProTableColumn>
+              <ProTableColumn prop="d" label="dasdfasdfasdf">
+                <template #header="{$index}">
+                  <span>{{ $index }}</span>
+                </template>
+              </ProTableColumn>
+              <ProTableColumn prop="d2" label="dasdfasdfasdf">
+                <template #header="{$index}">
+                  <span>{{ $index }}</span>
+                </template>
+              </ProTableColumn>
+              <ProTableColumn prop="d3" label="dasdfasdfasdf">
                 <template #header="{$index}">
                   <span>{{ $index }}</span>
                 </template>
@@ -55,9 +65,9 @@ const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = as
   for(let i=0; i<pageSize; i++){
     list.push({
       id: (pageNo-1)*pageSize + i,
-      a: 10,
+      a: '撒旦看风景啊螺丝钉咖啡碱阿斯利康大家发阿斯利康大家flask觉得分厘卡世界的分厘卡是阿斯兰的看风景阿拉山口大家flask酱豆腐立刻',
       b: 11,
-      d:12
+      d:'撒旦看风景啊螺丝钉咖啡碱阿斯利康大家发阿斯利康大家flask觉得分厘卡世界的分厘卡是阿斯兰的看风景阿拉山口大家flask酱豆腐立刻'
     })
   }
 

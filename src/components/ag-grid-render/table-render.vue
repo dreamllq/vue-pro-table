@@ -6,6 +6,7 @@
     :row-data='config.data'
     row-selection='single'
     @grid-ready='onGridReady'
+    @first-data-rendered='onFirstDataRendered'
   />
 </template>
 
@@ -35,7 +36,10 @@ let gridApi:any = null;
 let gridColumnApi:any = null;
 
 const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 17 + 2);
-const style = computed(() => ({ height: `${props.config.height || defaultTableHeight.value}px` }));
+const style = computed(() => ({
+  height: `${props.config.height || defaultTableHeight.value}px`,
+  width: '100%' 
+}));
 const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
 
   let cellRenderer: any = undefined;
@@ -43,6 +47,7 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
 
   if (columnConfig.defaultRender) cellRenderer = CellRender;
   if (columnConfig.headerRender) customHeader = CustomHeader;
+
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
     customHeader = SelectionCustomHeader;
@@ -72,13 +77,28 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
       columnIndex: index,
       selectionRows,
       selectionType
-    }
+    },
+    width: columnConfig.width ?? undefined,
+    minWidth: columnConfig.minWidth ?? undefined
   };
 }));
+
+
+const autoSizeAll = (skipHeader) => {
+  const allColumnIds:any[] = [];
+  gridColumnApi.getColumns().forEach((column) => {
+    allColumnIds.push(column.getId());
+  });
+  gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+};
 
 const onGridReady = (params) => {
   gridApi = params.api;
   gridColumnApi = params.columnApi;
+};
+
+const onFirstDataRendered = (params) => {
+  params.api.sizeColumnsToFit();
 };
 
 watch(() => selectionRows.value, () => {
