@@ -4,8 +4,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { findIndex, get } from 'lodash';
-import { SelectionRows, TableConfig } from '@/types';
+import { TableConfig } from '@/types';
 
 const props = defineProps({
   params: {
@@ -15,22 +14,16 @@ const props = defineProps({
 });
 
 
-const selectionRows = computed<SelectionRows>(() => props.params.selectionRows.value);
 const tableConfig = computed<TableConfig>(() => props.params.tableConfig.value);
-const row = computed(() => props.params.data);
+const rowCheckedStatusList = computed<boolean[]>(() => props.params.selectionRowCheckedStatusList.value);
+const rowIndex = computed(() => props.params.rowIndex);
+const checked = computed(() => rowCheckedStatusList.value[rowIndex.value]);
 
-
-const checked = computed(() => selectionRows.value.some(r => get(row.value, tableConfig.value.rowKey, undefined) === get(r, tableConfig.value.rowKey, null)));
-const rowsIndex = computed(() => findIndex(selectionRows.value, (r) => get(row.value, tableConfig.value.rowKey, undefined) === get(r, tableConfig.value.rowKey, null)));
+// eslint-disable-next-line vue/no-setup-props-destructure
+const selectionToggleRow = props.params.selectionToggleRow;
 
 const onChange = (val) => {
-  if (val === true) {
-    selectionRows.value.push(props.params.data);
-  } else {
-    if (rowsIndex.value !== -1) {
-      selectionRows.value.splice(rowsIndex.value, 1);
-    }
-  }
+  selectionToggleRow(tableConfig.value.data?.[rowIndex.value], val);
 };
 
 </script>

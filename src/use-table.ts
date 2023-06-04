@@ -1,8 +1,9 @@
 import { ref, computed, Ref } from 'vue';
 import { ColumnConfig, CustomColumnConfig, SelectionRows, SelectionType, TableConfig } from '@/types';
-import { findIndex, cloneDeep, merge } from 'lodash';
+import { findIndex, cloneDeep, merge, get, isEqual } from 'lodash';
 import { createInjectionState } from '@vueuse/shared';
 import { useReserveSelection } from './use-reserve-selection';
+import { useSelection } from './use-selection';
 
 const [useProvideTable, useTable] = createInjectionState(() => {
   const _configs = ref<ColumnConfig[]>([]);
@@ -12,6 +13,14 @@ const [useProvideTable, useTable] = createInjectionState(() => {
   const selectionType = ref<SelectionType>('positive');
 
   const tableConfig = ref<TableConfig>({});
+  
+  const isSameRow = (a:any, b:any) => {
+    if (tableConfig.value.rowKey) {
+      return get(a, tableConfig.value.rowKey, undefined) === get(b, tableConfig.value.rowKey, undefined) && get(a, tableConfig.value.rowKey, undefined) !== undefined;
+    } else {
+      return isEqual(a, b);
+    }
+  };
 
   const {
     checked: reserveSelectionChecked, 
@@ -23,7 +32,21 @@ const [useProvideTable, useTable] = createInjectionState(() => {
   } = useReserveSelection({
     selectionRows,
     selectionType,
-    tableConfig 
+    tableConfig,
+    isSameRow
+  });
+
+  const {
+    checked: selectionChecked, 
+    indeterminate: selectionIndeterminate,
+    rowCheckedStatusList: selectionRowCheckedStatusList,
+    toggleRowSelection: selectionToggleRow,
+    toggleAllSelection: selectionToggleAll
+  } = useSelection({
+    selectionRows,
+    selectionType,
+    tableConfig,
+    isSameRow
   });
 
   const insertConfig = (config: ColumnConfig, index: number) => {
@@ -103,12 +126,18 @@ const [useProvideTable, useTable] = createInjectionState(() => {
     getCustomColumns,
     updateCustomColumns,
     setTableConfig,
+    isSameRow,
     reserveSelectionChecked,
     reserveSelectionIndeterminate,
     reserveSelectionSetType,
     reserveSelectionToggleAll,
     reserveSelectionRowCheckedStatusList,
-    reserveSelectionToggleRow
+    reserveSelectionToggleRow,
+    selectionChecked,
+    selectionIndeterminate,
+    selectionRowCheckedStatusList,
+    selectionToggleRow,
+    selectionToggleAll
   };
 });
 

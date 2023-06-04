@@ -7,6 +7,7 @@
     row-selection='single'
     @grid-ready='onGridReady'
     @first-data-rendered='onFirstDataRendered'
+    @selection-changed='onSelectionChanged'
   />
 </template>
 
@@ -29,7 +30,7 @@ import { findIndex, isBoolean, isEqual } from 'lodash';
 const props = defineProps<{
   config: TableConfig,
 }>();
-const emit = defineEmits(['selection-change']);
+const emit = defineEmits(['selection-change', 'current-change']);
 
 const {
   columnConfigs, 
@@ -41,10 +42,18 @@ const {
   reserveSelectionSetType,
   reserveSelectionToggleAll,
   reserveSelectionRowCheckedStatusList,
-  reserveSelectionToggleRow
+  reserveSelectionToggleRow,
+  selectionChecked,
+  selectionIndeterminate,
+  selectionRowCheckedStatusList,
+  selectionToggleRow,
+  selectionToggleAll,
+  isSameRow
 } = useTable()!;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let gridApi:any = null;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let gridColumnApi:any = null;
 
 const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 17 + 2);
@@ -52,10 +61,13 @@ const style = computed(() => ({
   height: `${props.config.height || defaultTableHeight.value}px`,
   width: '100%' 
 }));
+
 const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
 
   let cellRenderer: any = undefined;
   let customHeader: any = undefined;
+  let cellRendererParams: any = {};
+  let headerComponentParams: any = {};
 
   if (columnConfig.defaultRender) cellRenderer = CellRender;
   if (columnConfig.headerRender) customHeader = CustomHeader;
@@ -63,9 +75,28 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
     customHeader = SelectionCustomHeader;
+    cellRendererParams = {
+      selectionRowCheckedStatusList,
+      selectionToggleRow 
+    };
+    headerComponentParams = {
+      selectionChecked,
+      selectionIndeterminate,
+      selectionToggleAll
+    };
   } else if (columnConfig.type === 'reserveSelection') {
     cellRenderer = ReserveSelectionColumn;
     customHeader = ReserveSelectionCustomHeader;
+    cellRendererParams = {
+      reserveSelectionRowCheckedStatusList,
+      reserveSelectionToggleRow
+    };
+    headerComponentParams = {
+      reserveSelectionChecked,
+      reserveSelectionIndeterminate,
+      reserveSelectionSetType,
+      reserveSelectionToggleAll
+    };
   } else if (columnConfig.type === 'index') {
     cellRenderer = IndexCellRender;
   }
@@ -74,28 +105,23 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
     headerName: columnConfig.label,
     field: columnConfig.prop,
     cellRenderer: cellRenderer,
-    cellRendererParams: {
+    cellRendererParams: Object.assign({
       columnConfig,
       tableConfig,
       selectionRows,
-      selectionType,
-      reserveSelectionRowCheckedStatusList,
-      reserveSelectionToggleRow
-    },
+      selectionType
+      
+    }, cellRendererParams),
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
     headerComponent: customHeader,
-    headerComponentParams: {
+    headerComponentParams: Object.assign({
       columnConfig,
       tableConfig,
       columnIndex: index,
       selectionRows,
-      selectionType,
-      reserveSelectionChecked,
-      reserveSelectionIndeterminate,
-      reserveSelectionSetType,
-      reserveSelectionToggleAll
-    },
+      selectionType
+    }, headerComponentParams),
     width: columnConfig.width ?? undefined,
     minWidth: columnConfig.minWidth ?? undefined
   };
@@ -108,6 +134,11 @@ const onGridReady = (params) => {
 
 const onFirstDataRendered = (params) => {
   params.api.sizeColumnsToFit();
+};
+
+const onSelectionChanged = () => {
+  const selectedRows = gridApi.getSelectedRows();
+  emit('current-change', selectionRows.value.map(row => row), selectedRows[0]);
 };
 
 watch(() => selectionRows.value, () => {
@@ -140,16 +171,37 @@ const toggleRowSelection = (row:any, selected?:boolean) => {
   }
 };
 const toggleAllSelection = () => {
+  selectionToggleAll();
 };
-const toggleRowExpansion = (row, expanded?: boolean) => {};
-const setCurrentRow = (row) => {};
+const toggleRowExpansion = () => {
+  console.error('not support');
+};
+const setCurrentRow = (row) => {
+  gridApi.forEachNodeAfterFilter(node => {
+    if (isSameRow(row, node.data)) {
+      node.setSelected(true, true);
+    }
+  });
+};
 const clearSort = () => {};
-const clearFilter = (columnKeys) => {};
-const doLayout = () => {};
-const sort = ({ prop, order }) => {};
-const scrollTo = (options, yCoord) => {};
-const setScrollTop = (top: number) => {};
-const setScrollLeft = (left: number) => {};
+const clearFilter = () => {
+  console.error('not support');
+};
+const doLayout = () => {
+  console.error('not support');
+};
+const sort = () => {
+  console.error('not support');
+};
+const scrollTo = () => {
+  console.error('not support');
+};
+const setScrollTop = () => {
+  console.error('not support');
+};
+const setScrollLeft = () => {
+  throw new Error('not support');
+};
 
 defineExpose({
   clearSelection,

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <el-button @click="setCurrentRow">setCurrentRow</el-button>
+  </div>
+  <div>
     <el-checkbox v-model="showSelectionAlert">showSelectionAlert</el-checkbox>
     <el-checkbox v-model="reserveSelection">reserveSelection</el-checkbox>
   </div>
@@ -11,7 +14,7 @@
       <template #default="{data, indexMethod}">
         <AutoHeightWrapper>
           <template #default="{size}">
-            <ProTable :data="data" rowKey="id" :height="size.height" renderTableType="ag-grid" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
+            <ProTable :data="data" :height="size.height" renderTableType="ag-grid" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
               <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection" :reserveSelection="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="selection" label="选择" prop="reserveSelection1" :reserveSelection="reserveSelection"></ProTableColumn>
               <ProTableColumn type="index" label="csdfasdfasdfasdfasdfsd" prop="c"></ProTableColumn>
@@ -75,6 +78,15 @@ const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = as
     list: list,
     total: 201
   }
+}
+
+const setCurrentRow = ()=>{
+  tableRef.value.setCurrentRow({
+      id: 2,
+      a: '撒旦看风景啊螺丝钉咖啡碱阿斯利康大家发阿斯利康大家flask觉得分厘卡世界的分厘卡是阿斯兰的看风景阿拉山口大家flask酱豆腐立刻',
+      b: 11,
+      d:'撒旦看风景啊螺丝钉咖啡碱阿斯利康大家发阿斯利康大家flask觉得分厘卡世界的分厘卡是阿斯兰的看风景阿拉山口大家flask酱豆腐立刻'
+    })
 }
 
 const getRowSelection = ()=>{

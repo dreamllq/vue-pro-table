@@ -1,23 +1,18 @@
 import { Ref, computed } from 'vue';
 import { SelectionRows, SelectionType, TableConfig } from './types';
-import { findIndex, get, isEqual } from 'lodash';
+import { findIndex, get } from 'lodash';
 
 export const useReserveSelection = ({
   selectionRows,
   selectionType,
-  tableConfig
+  tableConfig,
+  isSameRow
 } :{
   selectionRows: Ref<SelectionRows>,
   selectionType:Ref<SelectionType>,
-  tableConfig:Ref<TableConfig>
+  tableConfig:Ref<TableConfig>,
+  isSameRow: (a:any, b:any) => boolean
 }) => {
-  const isSameRow = (a, b) => {
-    if (tableConfig.value.rowKey) {
-      return get(a, tableConfig.value.rowKey, undefined) === get(b, tableConfig.value.rowKey, undefined) && get(a, tableConfig.value.rowKey, undefined) !== undefined;
-    } else {
-      return isEqual(a, b);
-    }
-  };
 
   const rowCheckedStatusList = computed(() => {
     if (selectionType.value === 'positive') {
@@ -54,7 +49,7 @@ export const useReserveSelection = ({
 
   const pushRows = () => {
     tableConfig.value.data?.forEach(row => {
-      const index = findIndex(selectionRows.value, (item) => get(item, tableConfig.value.rowKey) === get(row, tableConfig.value.rowKey));
+      const index = findIndex(selectionRows.value, (item) => isSameRow(row, item));
       if (index < 0) {
         selectionRows.value.push(row);
       }
@@ -63,7 +58,7 @@ export const useReserveSelection = ({
   
   const deleteRows = () => {
     tableConfig.value.data?.forEach(row => {
-      const index = findIndex(selectionRows.value, (item) => get(item, tableConfig.value.rowKey) === get(row, tableConfig.value.rowKey));
+      const index = findIndex(selectionRows.value, (item) => isSameRow(row, item));
       if (index > -1) {
         selectionRows.value.splice(index, 1);
       }
