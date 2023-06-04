@@ -83,15 +83,6 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
   };
 }));
 
-
-const autoSizeAll = (skipHeader) => {
-  const allColumnIds:any[] = [];
-  gridColumnApi.getColumns().forEach((column) => {
-    allColumnIds.push(column.getId());
-  });
-  gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
-};
-
 const onGridReady = (params) => {
   gridApi = params.api;
   gridColumnApi = params.columnApi;
