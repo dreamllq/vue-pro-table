@@ -19,6 +19,7 @@ import { TableConfig } from '@/types';
 import CellRender from './cell-render.tsx';
 import SelectionCellRender from './selection-column/cell-render.vue';
 import SelectionCustomHeader from './selection-column/custom-header';
+import IndexCellRender from './index-column/cell-render.vue';
 
 const props = defineProps<{
   config: TableConfig,
@@ -41,6 +42,8 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig) => {
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
     customHeader = SelectionCustomHeader;
+  } else if (columnConfig.type === 'index') {
+    cellRenderer = IndexCellRender;
   }
 
   return {

@@ -15,6 +15,7 @@
               <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection" :reserveSelection="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="selection" label="选择" prop="reserveSelection1" :reserveSelection="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
+              <ProTableColumn type="index" label="cc" :index="(index)=>index" prop="cc"></ProTableColumn>
               <ProTableColumn prop="id" label="id"></ProTableColumn>
               <ProTableColumn prop="b" label="bb" disabled>
                 <template #default="{row}">{{ row }}</template>
