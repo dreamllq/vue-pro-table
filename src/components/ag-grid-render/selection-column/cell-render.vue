@@ -15,11 +15,9 @@ const props = defineProps({
 });
 
 
-const columnConfigs = computed<ColumnConfig[]>(() => props.params.columnConfigs.value);
+const columnConfig = computed<ColumnConfig>(() => props.params.columnConfig);
 const rowSelection = computed<RowSelection>(() => props.params.rowSelection);
 const tableConfig = computed<TableConfig>(() => props.params.tableConfig.value);
-const index = computed<number>(() => props.params.index);
-const column = computed(() => columnConfigs.value[index.value]);
 const row = computed(() => props.params.data);
 
 

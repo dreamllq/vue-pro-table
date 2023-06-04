@@ -128,9 +128,7 @@ const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
 const clearSelection: TableInstance['clearSelection'] = () => {
   tableRef.value!.clearSelection();
-  while (rowSelection.rows.length > 0) {
-    rowSelection.rows.pop();
-  }
+  rowSelection.rows.splice(0, rowSelection.rows.length);
 };
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
 const toggleRowSelection: TableInstance['toggleRowSelection'] = (row, selected) => tableRef.value!.toggleRowSelection(row, selected);

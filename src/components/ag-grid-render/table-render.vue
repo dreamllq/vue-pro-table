@@ -32,7 +32,7 @@ let gridColumnApi:any = null;
 
 const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 17 + 2);
 const style = computed(() => ({ height: `${props.config.height || defaultTableHeight.value}px` }));
-const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
+const columnDefs = computed(() => columnConfigs.value.map((columnConfig) => {
 
   let cellRenderer: any = undefined;
   let cellRendererParams: any = undefined;
@@ -43,14 +43,13 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
     cellRendererParams = {
-      columnConfigs,
       rowSelection,
       tableConfig
     },
     customHeader = SelectionCustomHeader;
     headerComponentParams = {
       rowSelection,
-      tableConfig 
+      tableConfig
     };
   }
 
@@ -58,11 +57,11 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
     headerName: columnConfig.label,
     field: columnConfig.prop,
     cellRenderer: cellRenderer,
-    cellRendererParams: Object.assign({ index }, cellRendererParams || {}),
+    cellRendererParams: Object.assign({ columnConfig }, cellRendererParams || {}),
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
     headerComponent: customHeader,
-    headerComponentParams: headerComponentParams
+    headerComponentParams: Object.assign({ columnConfig }, headerComponentParams || {})
   };
 }));
 
@@ -72,9 +71,7 @@ const onGridReady = (params) => {
 };
 
 const clearSelection = () => {
-  while (rowSelection.rows.length > 0) {
-    rowSelection.rows.pop();
-  }
+  rowSelection.rows.splice(0, rowSelection.rows.length);
 };
 
 const getSelectionRows = () => {

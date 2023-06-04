@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-checkbox v-model="showSelectionAlert">showSelectionAlert</el-checkbox>
+    <el-checkbox v-model="reserveSelection">reserveSelection</el-checkbox>
   </div>
   <div>
     <el-button :icon="Setting" ref="settingRef"/>
@@ -11,7 +12,7 @@
         <AutoHeightWrapper>
           <template #default="{size}">
             <ProTable :data="data" rowKey="id" :height="size.height" renderTableType="ag-grid" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
-              <ProTableColumn type="selection" label="选择" prop="reserveSelection"></ProTableColumn>
+              <ProTableColumn type="selection" label="选择" prop="reserveSelection" :reserveSelection="reserveSelection"></ProTableColumn>
               <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
               <ProTableColumn prop="id" label="id"></ProTableColumn>
               <ProTableColumn prop="b" label="bb" disabled>
@@ -40,6 +41,7 @@ const tableRef = ref<InstanceType<typeof ProTable>>()
 const customColumnPopRef = ref<InstanceType<typeof CustomColumnPop>>()
 
 const showSelectionAlert=ref(true)
+const reserveSelection=ref(true)
 
 const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = async ({ pageNo, pageSize }) => {
   const list:any[] = [];

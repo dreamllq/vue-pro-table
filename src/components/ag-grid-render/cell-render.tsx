@@ -1,5 +1,5 @@
 import { defineComponent, computed } from 'vue';
-import { useTable } from '@/use-table';
+import { ColumnConfig } from '@/types';
 
 export default defineComponent({
   props: {
@@ -9,14 +9,14 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { columnConfigs } = useTable()!;
+    const columnConfig = computed<ColumnConfig>(() => props.params.columnConfig);
     const scope = computed(() => ({
       row: props.params.data,
-      column: columnConfigs.value[props.params.index],
+      column: columnConfig,
       $index: props.params.rowIndex
     }));
 
-    const defaultRender = columnConfigs.value[props.params.index].defaultRender;
+    const defaultRender = columnConfig.value.defaultRender;
 
     return {
       scope,

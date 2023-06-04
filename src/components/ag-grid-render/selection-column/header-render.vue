@@ -3,11 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import { RowSelection, TableConfig } from '@/types';
+import { ColumnConfig, RowSelection, TableConfig } from '@/types';
 import { ElCheckbox } from 'element-plus';
 import { findIndex, get } from 'lodash';
 import { watch, computed } from 'vue';
-// import { useTable } from '@/use-table';
 const props = defineProps({
   params: {
     type: Object,
@@ -15,8 +14,8 @@ const props = defineProps({
   }
 });
 
-// const { columnConfigs, rowSelection } = useTable()!;
 
+const columnConfig = computed<ColumnConfig>(() => props.params.columnConfig);
 const rowSelection = computed<RowSelection>(() => props.params.rowSelection);
 const tableConfig = computed<TableConfig>(() => props.params.tableConfig.value);
 const data = computed(() => tableConfig.value.data);
@@ -26,11 +25,11 @@ const checkedList = computed(() => checkedStatusList.value.filter(item => item =
 const checked = computed(() => checkedList.value.length === checkedStatusList.value.length);
 const indeterminate = computed(() => checkedList.value.length > 0 && checkedList.value.length < checkedStatusList.value.length);
 
-// const scope = computed(() => ({
-//   row: props.params.data,
-//   column: columnConfigs.value[props.params.index],
-//   $index: props.params.rowIndex
-// }));
+watch(() => tableConfig.value.data, () => {
+  if (columnConfig.value.reserveSelection === false) {
+    rowSelection.value.rows.splice(0, rowSelection.value.rows.length);
+  }
+}, { deep: true });
 
 const onChange = (val) => {
   if (val === true) {
