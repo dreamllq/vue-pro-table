@@ -35,33 +35,31 @@ const style = computed(() => ({ height: `${props.config.height || defaultTableHe
 const columnDefs = computed(() => columnConfigs.value.map((columnConfig) => {
 
   let cellRenderer: any = undefined;
-  let cellRendererParams: any = undefined;
   let customHeader: any = undefined;
-  let headerComponentParams: any = undefined;
 
   if (columnConfig.defaultRender) cellRenderer = CellRender;
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
-    cellRendererParams = {
-      rowSelection,
-      tableConfig
-    },
     customHeader = SelectionCustomHeader;
-    headerComponentParams = {
-      rowSelection,
-      tableConfig
-    };
   }
 
   return {
     headerName: columnConfig.label,
     field: columnConfig.prop,
     cellRenderer: cellRenderer,
-    cellRendererParams: Object.assign({ columnConfig }, cellRendererParams || {}),
+    cellRendererParams: {
+      columnConfig,
+      rowSelection,
+      tableConfig 
+    },
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
     headerComponent: customHeader,
-    headerComponentParams: Object.assign({ columnConfig }, headerComponentParams || {})
+    headerComponentParams: {
+      columnConfig,
+      rowSelection,
+      tableConfig 
+    }
   };
 }));
 
