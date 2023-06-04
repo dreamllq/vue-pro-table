@@ -68,6 +68,11 @@ const onGridReady = (params) => {
   gridColumnApi = params.columnApi;
 };
 
+watch(() => rowSelection.rows, () => {
+  rowSelection.type = 'positive'; 
+  emit('selection-change', rowSelection.rows.map(row => row));
+}, { deep: true });
+
 const clearSelection = () => {
   rowSelection.rows.splice(0, rowSelection.rows.length);
 };

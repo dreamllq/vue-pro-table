@@ -109,7 +109,15 @@ const tableRef = ref<TableInstance>();
 
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
-const onSelectionChange = (...args: any[]) => emit('selection-change', ...args);
+const onSelectionChange = (...args: any[]) => {
+  emit('selection-change', ...args);
+  const selections = args[0];
+  rowSelection.rows.splice(0, rowSelection.rows.length);
+  selections.forEach(selection => {
+    rowSelection.rows.push(selection);
+  });
+  rowSelection.type = 'positive'; 
+};
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
 const onCellMouseLeave = (...args: any[]) => emit('cell-mouse-leave', ...args);
 const onCellClick = (...args: any[]) => emit('cell-click', ...args);
