@@ -1,26 +1,26 @@
 <template>
   <div class='section-alert'>
-    <template v-if='rowSelection.type === "positive"'>
+    <template v-if='selectionType === "positive"'>
       已选择
-      <strong>{{ rowSelection.rows.length }}</strong>
+      <strong>{{ selectionRows.length }}</strong>
       条
     </template>
 
-    <template v-if='rowSelection.type === "reverse"'>
+    <template v-if='selectionType === "reverse"'>
       已选择全部，并排除
-      <strong>{{ rowSelection.rows.length }}</strong>
+      <strong>{{ selectionRows.length }}</strong>
       条
     </template>
 
     <el-button
-      v-if='rowSelection.rows.length>0'
+      v-if='selectionRows.length>0'
       type='primary'
       link
       @click='onClear'>
-      <template v-if='rowSelection.type === "positive"'>
+      <template v-if='selectionType === "positive"'>
         取消选择
       </template>
-      <template v-if='rowSelection.type === "reverse"'>
+      <template v-if='selectionType === "reverse"'>
         取消排除
       </template>
     </el-button>
@@ -31,7 +31,7 @@
 import { useTable } from '@/use-table';
 
 const emit = defineEmits(['clear']);
-const { rowSelection } = useTable()!;
+const { selectionType, selectionRows } = useTable()!;
 
 const onClear = () => {
   emit('clear');

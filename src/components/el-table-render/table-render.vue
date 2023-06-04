@@ -83,7 +83,7 @@ defineProps<{
   config: TableConfig,
 }>();
 
-const { columnConfigs, rowSelection } = useTable()!;
+const { columnConfigs, selectionRows } = useTable()!;
 let multipleSelection = [];
 
 const emit = defineEmits([
@@ -115,9 +115,9 @@ const onSelectionChange = (...args: any[]) => {
   emit('selection-change', ...args);
   multipleSelection = args[0].map(row => row);
   const selections = args[0];
-  rowSelection.rows.splice(0, rowSelection.rows.length);
+  selectionRows.value.splice(0, selectionRows.value.length);
   selections.forEach(selection => {
-    rowSelection.rows.push(selection);
+    selectionRows.value.push(selection);
   });
 };
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
@@ -136,13 +136,13 @@ const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
-watch(() => rowSelection.rows, () => {
-  const addDiff = differenceWith(rowSelection.rows, multipleSelection, isEqual);
+watch(() => selectionRows.value, () => {
+  const addDiff = differenceWith(selectionRows.value, multipleSelection, isEqual);
   addDiff.forEach(row => {
     tableRef.value!.toggleRowSelection(row, true);
   });
 
-  const removeDiff = differenceWith(multipleSelection, rowSelection.rows, isEqual);
+  const removeDiff = differenceWith(multipleSelection, selectionRows.value, isEqual);
   removeDiff.forEach(row => {
     tableRef.value!.toggleRowSelection(row, false);
   });
@@ -150,7 +150,7 @@ watch(() => rowSelection.rows, () => {
 
 const clearSelection: TableInstance['clearSelection'] = () => {
   tableRef.value!.clearSelection();
-  rowSelection.rows.splice(0, rowSelection.rows.length);
+  selectionRows.value.splice(0, selectionRows.value.length);
 };
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
 const toggleRowSelection: TableInstance['toggleRowSelection'] = (row, selected) => tableRef.value!.toggleRowSelection(row, selected);

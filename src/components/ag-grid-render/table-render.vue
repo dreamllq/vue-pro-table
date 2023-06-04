@@ -21,13 +21,15 @@ import CustomHeader from './custom-header.ts';
 import SelectionCellRender from './selection-column/cell-render.vue';
 import SelectionCustomHeader from './selection-column/custom-header';
 import IndexCellRender from './index-column/cell-render.vue';
+import ReserveSelectionColumn from './reserve-selection-column/cell-render.vue';
+import ReserveSelectionCustomHeader from './reserve-selection-column/custom-header';
 
 const props = defineProps<{
   config: TableConfig,
 }>();
 const emit = defineEmits(['selection-change']);
 
-const { columnConfigs, rowSelection, tableConfig } = useTable()!;
+const { columnConfigs, tableConfig, selectionRows, selectionType } = useTable()!;
 
 let gridApi:any = null;
 let gridColumnApi:any = null;
@@ -44,6 +46,9 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
     customHeader = SelectionCustomHeader;
+  } else if (columnConfig.type === 'reserveSelection') {
+    cellRenderer = ReserveSelectionColumn;
+    customHeader = ReserveSelectionCustomHeader;
   } else if (columnConfig.type === 'index') {
     cellRenderer = IndexCellRender;
   }
@@ -54,17 +59,19 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
     cellRenderer: cellRenderer,
     cellRendererParams: {
       columnConfig,
-      rowSelection,
-      tableConfig 
+      tableConfig,
+      selectionRows,
+      selectionType
     },
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
     headerComponent: customHeader,
     headerComponentParams: {
       columnConfig,
-      rowSelection,
       tableConfig,
-      columnIndex: index
+      columnIndex: index,
+      selectionRows,
+      selectionType
     }
   };
 }));
@@ -74,13 +81,12 @@ const onGridReady = (params) => {
   gridColumnApi = params.columnApi;
 };
 
-watch(() => rowSelection.rows, () => {
-  rowSelection.type = 'positive'; 
-  emit('selection-change', rowSelection.rows.map(row => row));
+watch(() => selectionRows.value, () => {
+  emit('selection-change', selectionRows.value.map(row => row));
 }, { deep: true });
 
 const clearSelection = () => {
-  rowSelection.rows.splice(0, rowSelection.rows.length);
+  selectionRows.value.splice(0, selectionRows.value.length);
 };
 
 const getSelectionRows = () => {

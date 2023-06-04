@@ -9,7 +9,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    console.log(props.params);
     const columnConfig = computed<ColumnConfig>(() => props.params.columnConfig);
     const scope = computed(() => ({
       column: columnConfig,

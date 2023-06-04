@@ -90,3 +90,6 @@ export interface RowSelection {
   rows: any[],
   type: 'reverse' | 'positive'
 }
+
+export type SelectionRows = any[];
+export type SelectionType = 'reverse' | 'positive';

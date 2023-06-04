@@ -55,7 +55,7 @@ import AgGridRender from './ag-grid-render/table-render.vue';
 import { cloneDeep, differenceWith, isEqual } from 'lodash';
 import CustomColumnPop from '@/components/custom-column/custom-column-pop.vue';
 
-const { setTableConfig, rowSelection } = useTable()!;
+const { setTableConfig, selectionRows, selectionType } = useTable()!;
 
 const props = defineProps<{
   config: TableConfig,
@@ -138,19 +138,25 @@ const onClear = () => {
   tableRef.value!.clearSelection();
 };
 
-let selectionRows: RowSelection[] = [];
-watch(() => rowSelection.rows, () => {
-  const addDiff = differenceWith(rowSelection.rows, selectionRows, isEqual);
-  const removeDiff = differenceWith(selectionRows, rowSelection.rows, isEqual);
+let _selectionRows: RowSelection[] = [];
+watch(() => selectionRows.value, () => {
+  const addDiff = differenceWith(selectionRows.value, _selectionRows, isEqual);
+  const removeDiff = differenceWith(_selectionRows, selectionRows.value, isEqual);
   if (addDiff.length > 0 || removeDiff.length > 0) {
-    emit('row-selection-change', cloneDeep(rowSelection));
+    emit('row-selection-change', cloneDeep({
+      rows: selectionRows.value,
+      type: selectionType.value
+    }));
   }
   
-  selectionRows = rowSelection.rows.map(row => row);
+  _selectionRows = selectionRows.value.map(row => row);
 }, { deep: true });
 
-watch(() => rowSelection.type, () => {
-  emit('row-selection-change', cloneDeep(rowSelection));
+watch(() => selectionType.value, () => {
+  emit('row-selection-change', cloneDeep({
+    rows: selectionRows.value,
+    type: selectionType.value
+  }));
 });
 
 const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
@@ -167,7 +173,10 @@ const scrollTo: TableInstance['scrollTo'] = (options, yCoord) => tableRef.value!
 const setScrollTop: TableInstance['setScrollTop'] = (top) => tableRef.value!.setScrollTop(top);
 const setScrollLeft: TableInstance['setScrollLeft'] = (left) => tableRef.value!.setScrollLeft(left);
 
-const getRowSelection = () => cloneDeep(rowSelection);
+const getRowSelection = () => cloneDeep({
+  rows: selectionRows.value,
+  type: selectionType.value
+});
 
 defineExpose({
   getRowSelection,

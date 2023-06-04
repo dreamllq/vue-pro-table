@@ -21,18 +21,32 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
-import { useTable } from '@/use-table';
+import { ElCheckbox, ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus';
 import { get, intersection, findIndex } from 'lodash';
+import { ColumnConfig, SelectionRows, SelectionType, TableConfig } from '@/types';
+
+const props = defineProps({
+  params: {
+    type: Object,
+    default: () => ({})
+  }
+});
 
 const COMMAND_POSITIVE = 'positiveModel';
 const COMMAND_REVERSE = 'reverseModel';
-
-const props = defineProps<{ column: any, index: number }>();
-
-const { tableConfig, selectionRows, selectionType } = useTable()!;
+const columnConfig = computed<ColumnConfig>(() => props.params.columnConfig);
+const selectionRows = computed<SelectionRows>(() => props.params.selectionRows.value);
+const selectionType = computed<SelectionType>({
+  get: () => props.params.selectionType.value,
+  set: (val) => {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.params.selectionType.value = val;
+  }
+});
+const tableConfig = computed<TableConfig>(() => props.params.tableConfig.value);
 
 watch(() => tableConfig.value.data, () => {
-  if (props.column.reserveSelection === false) {
+  if (columnConfig.value.reserveSelection === false) {
     selectionRows.value.splice(0, selectionRows.value.length);
   }
 }, { deep: true });
@@ -55,7 +69,7 @@ const checked = computed(() => {
 const indeterminate = computed(() => intersectionRowKeys.value.length > 0 && intersectionRowKeys.value.length < (tableConfig.value.data?.length ?? 0));
 
 const onCommand = (command) => {
-  selectionRows.value = [];
+  selectionRows.value.splice(0, selectionRows.value.length);
   if (command === COMMAND_POSITIVE) {
     selectionType.value = 'positive';
   } else if (command === COMMAND_REVERSE) {

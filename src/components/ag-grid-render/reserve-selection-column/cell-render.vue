@@ -4,14 +4,23 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useTable } from '@/use-table';
-import { get, findIndex } from 'lodash';
+import { findIndex, get } from 'lodash';
+import { SelectionRows, SelectionType, TableConfig } from '@/types';
 
-const props = defineProps<{ row:any, column:any, index:number }>();
+const props = defineProps({
+  params: {
+    type: Object,
+    default: () => ({})
+  }
+});
 
-const { tableConfig, selectionRows, selectionType } = useTable()!;
+const selectionRows = computed<SelectionRows>(() => props.params.selectionRows.value);
+const selectionType = computed<SelectionType>(() => props.params.selectionType.value);
+const tableConfig = computed<TableConfig>(() => props.params.tableConfig.value);
+const row = computed(() => props.params.data);
 
-const currentKey = computed(() => get(props.row, tableConfig.value.rowKey));
+
+const currentKey = computed(() => get(row.value, tableConfig.value.rowKey));
 
 const checked = computed(() => {
   const has = selectionRows.value.some((item) => currentKey.value === get(item, tableConfig.value.rowKey));
@@ -42,7 +51,7 @@ const onUpdateModelValue = (val) => {
 const pushRow = () => {
   const index = findIndex(selectionRows.value, (item) => get(item, tableConfig.value.rowKey) === currentKey.value);
   if (index < 0) {
-    selectionRows.value.push(props.row);
+    selectionRows.value.push(row.value);
   }
 };
 

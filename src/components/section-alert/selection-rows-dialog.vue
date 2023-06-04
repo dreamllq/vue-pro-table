@@ -13,9 +13,9 @@ import { ref, computed } from 'vue';
 import { useTable } from '@/use-table';
 import SelectionRowsTable from './selection-rows-table.vue';
 
-const { rowSelection } = useTable()!;
+const { selectionType } = useTable()!;
 const title = computed(() => {
-  if (rowSelection.type === 'positive') {
+  if (selectionType.value === 'positive') {
     return '选中记录';
   } else {
     return '全选排除记录';
