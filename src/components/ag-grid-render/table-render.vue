@@ -17,6 +17,7 @@ import { AgGridVue } from 'ag-grid-vue3';
 import { useTable } from '@/use-table';
 import { TableConfig } from '@/types';
 import CellRender from './cell-render.tsx';
+import CustomHeader from './custom-header.ts';
 import SelectionCellRender from './selection-column/cell-render.vue';
 import SelectionCustomHeader from './selection-column/custom-header';
 import IndexCellRender from './index-column/cell-render.vue';
@@ -33,12 +34,13 @@ let gridColumnApi:any = null;
 
 const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 17 + 2);
 const style = computed(() => ({ height: `${props.config.height || defaultTableHeight.value}px` }));
-const columnDefs = computed(() => columnConfigs.value.map((columnConfig) => {
+const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
 
   let cellRenderer: any = undefined;
   let customHeader: any = undefined;
 
   if (columnConfig.defaultRender) cellRenderer = CellRender;
+  if (columnConfig.headerRender) customHeader = CustomHeader;
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
     customHeader = SelectionCustomHeader;
@@ -61,7 +63,8 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig) => {
     headerComponentParams: {
       columnConfig,
       rowSelection,
-      tableConfig 
+      tableConfig,
+      columnIndex: index
     }
   };
 }));

@@ -14,6 +14,11 @@
             <ProTable :data="data" rowKey="id" :height="size.height" renderTableType="ag-grid" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
               <ProTableColumn type="selection" label="选择" prop="reserveSelection" :reserveSelection="reserveSelection"></ProTableColumn>
               <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
+              <ProTableColumn prop="d" label="d" >
+                <template #header="{$index}">
+                  <span>{{ $index }}</span>
+                </template>
+              </ProTableColumn>
               <ProTableColumn prop="id" label="id"></ProTableColumn>
               <ProTableColumn prop="b" label="bb" disabled>
                 <template #default="{row}">{{ row }}</template>
@@ -50,7 +55,8 @@ const fetchData: InstanceType<typeof AutoPagination>['$props']['fetchData'] = as
     list.push({
       id: (pageNo-1)*pageSize + i,
       a: 10,
-      b: 11
+      b: 11,
+      d:12
     })
   }
 

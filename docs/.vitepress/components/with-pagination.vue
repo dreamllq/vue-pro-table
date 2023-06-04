@@ -20,6 +20,9 @@
               <ProTableColumn prop="b" label="bb" disabled>
                 <template #default="{row}">{{ row }}</template>
               </ProTableColumn>
+              <ProTableColumn prop="d" label="d" disabled>
+                <template #header="{$index}">{{ $index }}</template>
+              </ProTableColumn>
             </ProTable>
           </template>
         </AutoHeightWrapper>  
