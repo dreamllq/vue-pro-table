@@ -6,7 +6,7 @@
   </div>
   <div class='pro-table'>
     <div ref='sectionAlertRef' class='section-alert'>
-      <section-alert v-if='config.showSelectionAlert' />
+      <section-alert v-if='config.showSelectionAlert' @clear='onClear' />
     </div>
     <div v-if='ready' class='table-main'>
       <table-render
@@ -142,11 +142,11 @@ const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
+const onClear = () => {
+  tableRef.value!.clearSelection();
+};
+
 watch(() => rowSelection, () => {
-  const rows = tableRef.value!.getSelectionRows();
-  if (rows.length !== 0 && rowSelection.rows.length === 0) {
-    tableRef.value!.clearSelection();
-  }
   emit('row-selection-change', cloneDeep(rowSelection));
 }, { deep: true });
 

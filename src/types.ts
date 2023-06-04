@@ -85,3 +85,8 @@ export interface CustomColumnConfig {
   label: string,
   disabled: boolean
 }
+
+export interface RowSelection {
+  rows: any[],
+  type: 'reverse' | 'positive'
+}

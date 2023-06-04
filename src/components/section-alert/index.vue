@@ -30,10 +30,11 @@
 <script setup lang="ts">
 import { useTable } from '@/use-table';
 
+const emit = defineEmits(['clear']);
 const { rowSelection } = useTable()!;
 
 const onClear = () => {
-  rowSelection.rows = [];
+  emit('clear');
 };
 </script>
 

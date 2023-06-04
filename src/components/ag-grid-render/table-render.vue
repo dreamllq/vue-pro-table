@@ -23,37 +23,46 @@ import SelectionCustomHeader from './selection-column/custom-header';
 const props = defineProps<{
   config: TableConfig,
 }>();
-
 const emit = defineEmits(['selection-change']);
 
-const { columnConfigs } = useTable()!;
+const { columnConfigs, rowSelection, tableConfig } = useTable()!;
 
 let gridApi:any = null;
 let gridColumnApi:any = null;
 
 const defaultTableHeight = computed(() => props.config.data!.length * 42 + 49 + 17 + 2);
-
 const style = computed(() => ({ height: `${props.config.height || defaultTableHeight.value}px` }));
-
 const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) => {
 
   let cellRenderer: any = undefined;
+  let cellRendererParams: any = undefined;
   let customHeader: any = undefined;
+  let headerComponentParams: any = undefined;
 
   if (columnConfig.defaultRender) cellRenderer = CellRender;
   if (columnConfig.type === 'selection') {
     cellRenderer = SelectionCellRender;
+    cellRendererParams = {
+      columnConfigs,
+      rowSelection,
+      tableConfig
+    },
     customHeader = SelectionCustomHeader;
+    headerComponentParams = {
+      rowSelection,
+      tableConfig 
+    };
   }
 
   return {
     headerName: columnConfig.label,
     field: columnConfig.prop,
     cellRenderer: cellRenderer,
-    cellRendererParams: { index },
+    cellRendererParams: Object.assign({ index }, cellRendererParams || {}),
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
-    headerComponent: customHeader
+    headerComponent: customHeader,
+    headerComponentParams: headerComponentParams
   };
 }));
 
@@ -63,7 +72,9 @@ const onGridReady = (params) => {
 };
 
 const clearSelection = () => {
-  gridApi!.deselectAll();
+  while (rowSelection.rows.length > 0) {
+    rowSelection.rows.pop();
+  }
 };
 
 const getSelectionRows = () => {

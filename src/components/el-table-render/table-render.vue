@@ -82,7 +82,7 @@ defineProps<{
   config: TableConfig,
 }>();
 
-const { columnConfigs } = useTable()!;
+const { columnConfigs, rowSelection } = useTable()!;
 
 const emit = defineEmits([
   'select',
@@ -126,7 +126,12 @@ const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
 
-const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
+const clearSelection: TableInstance['clearSelection'] = () => {
+  tableRef.value!.clearSelection();
+  while (rowSelection.rows.length > 0) {
+    rowSelection.rows.pop();
+  }
+};
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
 const toggleRowSelection: TableInstance['toggleRowSelection'] = (row, selected) => tableRef.value!.toggleRowSelection(row, selected);
 const toggleAllSelection: TableInstance['toggleAllSelection'] = () => tableRef.value!.toggleAllSelection();

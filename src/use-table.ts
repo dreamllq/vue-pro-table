@@ -1,18 +1,15 @@
 import { ref, computed, reactive, Ref } from 'vue';
-import { ColumnConfig, CustomColumnConfig, TableConfig } from '@/types';
+import { ColumnConfig, CustomColumnConfig, RowSelection, TableConfig } from '@/types';
 import { findIndex, cloneDeep, merge } from 'lodash';
 import { createInjectionState } from '@vueuse/shared';
 
 const [useProvideTable, useTable] = createInjectionState(() => {
   const _configs = ref<ColumnConfig[]>([]);
   const _columns = ref<CustomColumnConfig[]>([]);
-  const rowSelection = reactive<{
-    rows: any[],
-    type: 'reverse' | 'positive'
-      }>({
-        rows: [],
-        type: 'positive' 
-      });
+  const rowSelection = reactive<RowSelection>({
+    rows: [],
+    type: 'positive' 
+  });
 
   const tableConfig = ref<TableConfig>({});
 
