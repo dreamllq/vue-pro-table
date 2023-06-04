@@ -72,17 +72,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useTable } from '@/use-table';
 import TableColumnRender from './table-column-render.tsx';
 import { TableConfig } from '@/types';
 import type { TableInstance } from 'element-plus';
+import { differenceWith, isEqual } from 'lodash';
 
 defineProps<{
   config: TableConfig,
 }>();
 
 const { columnConfigs, rowSelection } = useTable()!;
+let multipleSelection = [];
 
 const emit = defineEmits([
   'select',
@@ -111,12 +113,12 @@ const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
 const onSelectionChange = (...args: any[]) => {
   emit('selection-change', ...args);
+  multipleSelection = args[0].map(row => row);
   const selections = args[0];
   rowSelection.rows.splice(0, rowSelection.rows.length);
   selections.forEach(selection => {
     rowSelection.rows.push(selection);
   });
-  rowSelection.type = 'positive'; 
 };
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
 const onCellMouseLeave = (...args: any[]) => emit('cell-mouse-leave', ...args);
@@ -133,6 +135,18 @@ const onFilterChange = (...args: any[]) => emit('filter-change', ...args);
 const onCurrentChange = (...args: any[]) => emit('current-change', ...args);
 const onHeaderDragend = (...args: any[]) => emit('header-dragend', ...args);
 const onExpandChange = (...args: any[]) => emit('expand-change', ...args);
+
+watch(() => rowSelection.rows, () => {
+  const addDiff = differenceWith(rowSelection.rows, multipleSelection, isEqual);
+  addDiff.forEach(row => {
+    tableRef.value!.toggleRowSelection(row, true);
+  });
+
+  const removeDiff = differenceWith(multipleSelection, rowSelection.rows, isEqual);
+  removeDiff.forEach(row => {
+    tableRef.value!.toggleRowSelection(row, false);
+  });
+}, { deep: true });
 
 const clearSelection: TableInstance['clearSelection'] = () => {
   tableRef.value!.clearSelection();

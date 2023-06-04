@@ -13,6 +13,7 @@
           <template #default="{size}">
             <ProTable :data="data" rowKey="id" :height="size.height" :showSelectionAlert="showSelectionAlert" ref="tableRef" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" @row-selection-change="onRowSelectionChange">
               <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection" :reserveSelection="reserveSelection"> </ProTableColumn>
+              <ProTableColumn type="selection" label="选择" prop="reserveSelection1" :reserveSelection="reserveSelection"> </ProTableColumn>
               <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
               <ProTableColumn prop="id" label="id"></ProTableColumn>
               <ProTableColumn prop="b" label="bb" disabled>

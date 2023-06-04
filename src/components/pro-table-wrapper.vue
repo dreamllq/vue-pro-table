@@ -49,10 +49,10 @@ import { ref, onMounted, computed, watch } from 'vue';
 import SectionAlert from '@/components/section-alert/index.vue';
 import { useTable } from '@/use-table';
 import type { TableInstance } from 'element-plus';
-import { TableConfig } from '@/types';
+import { RowSelection, TableConfig } from '@/types';
 import ElTableRender from './el-table-render/table-render.vue';
 import AgGridRender from './ag-grid-render/table-render.vue';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, differenceWith, isEqual } from 'lodash';
 import CustomColumnPop from '@/components/custom-column/custom-column-pop.vue';
 
 const { setTableConfig, rowSelection } = useTable()!;
@@ -117,10 +117,7 @@ onMounted(() => {
 
 const onSelect = (...args:any[]) => emit('select', ...args);
 const onSelectAll = (...args:any[]) => emit('select-all', ...args);
-const onSelectionChange = (...args: any[]) => {
-  emit('selection-change', ...args);
-  
-};
+const onSelectionChange = (...args: any[]) => emit('selection-change', ...args);
 const onCellMouseEnter = (...args: any[]) => emit('cell-mouse-enter', ...args);
 const onCellMouseLeave = (...args: any[]) => emit('cell-mouse-leave', ...args);
 const onCellClick = (...args: any[]) => emit('cell-click', ...args);
@@ -141,9 +138,20 @@ const onClear = () => {
   tableRef.value!.clearSelection();
 };
 
-watch(() => rowSelection, () => {
-  emit('row-selection-change', cloneDeep(rowSelection));
+let selectionRows: RowSelection[] = [];
+watch(() => rowSelection.rows, () => {
+  const addDiff = differenceWith(rowSelection.rows, selectionRows, isEqual);
+  const removeDiff = differenceWith(selectionRows, rowSelection.rows, isEqual);
+  if (addDiff.length > 0 || removeDiff.length > 0) {
+    emit('row-selection-change', cloneDeep(rowSelection));
+  }
+  
+  selectionRows = rowSelection.rows.map(row => row);
 }, { deep: true });
+
+watch(() => rowSelection.type, () => {
+  emit('row-selection-change', cloneDeep(rowSelection));
+});
 
 const clearSelection: TableInstance['clearSelection'] = () => tableRef.value!.clearSelection();
 const getSelectionRows: TableInstance['getSelectionRows'] = () => tableRef.value!.getSelectionRows();
