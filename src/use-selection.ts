@@ -1,15 +1,13 @@
 import { Ref, computed } from 'vue';
-import { SelectionRows, SelectionType, TableConfig } from './types';
+import { SelectionRows, TableConfig } from './types';
 import { findIndex } from 'lodash';
 
 export const useSelection = ({
   selectionRows,
-  selectionType,
   tableConfig,
   isSameRow
 } :{
   selectionRows: Ref<SelectionRows>,
-  selectionType:Ref<SelectionType>,
   tableConfig:Ref<TableConfig>,
   isSameRow: (a:any, b:any) => boolean
 }) => {

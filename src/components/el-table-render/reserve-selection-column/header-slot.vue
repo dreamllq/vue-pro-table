@@ -38,6 +38,10 @@ const {
   reserveSelectionToggleAll
 } = useTable()!;
 
+if (props.column.reserveSelection === true && tableConfig.value.rowKey === undefined) {
+  console.error('需要配置rowKey');
+}
+
 watch(() => tableConfig.value.data, () => {
   if (props.column.reserveSelection === false) {
     selectionRows.value.splice(0, selectionRows.value.length);

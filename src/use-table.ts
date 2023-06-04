@@ -44,7 +44,6 @@ const [useProvideTable, useTable] = createInjectionState(() => {
     toggleAllSelection: selectionToggleAll
   } = useSelection({
     selectionRows,
-    selectionType,
     tableConfig,
     isSameRow
   });

@@ -8,6 +8,7 @@
     @grid-ready='onGridReady'
     @first-data-rendered='onFirstDataRendered'
     @selection-changed='onSelectionChanged'
+    @grid-columns-changed='onGridColumnsChanged'
   />
 </template>
 
@@ -110,7 +111,6 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
       tableConfig,
       selectionRows,
       selectionType
-      
     }, cellRendererParams),
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
@@ -139,6 +139,10 @@ const onFirstDataRendered = (params) => {
 const onSelectionChanged = () => {
   const selectedRows = gridApi.getSelectedRows();
   emit('current-change', selectionRows.value.map(row => row), selectedRows[0]);
+};
+
+const onGridColumnsChanged = (params) => {
+  params.api.sizeColumnsToFit();
 };
 
 watch(() => selectionRows.value, () => {
