@@ -24,13 +24,25 @@ import SelectionCustomHeader from './selection-column/custom-header';
 import IndexCellRender from './index-column/cell-render.vue';
 import ReserveSelectionColumn from './reserve-selection-column/cell-render.vue';
 import ReserveSelectionCustomHeader from './reserve-selection-column/custom-header';
+import { findIndex, isBoolean, isEqual } from 'lodash';
 
 const props = defineProps<{
   config: TableConfig,
 }>();
 const emit = defineEmits(['selection-change']);
 
-const { columnConfigs, tableConfig, selectionRows, selectionType } = useTable()!;
+const {
+  columnConfigs, 
+  tableConfig, 
+  selectionRows, 
+  selectionType, 
+  reserveSelectionChecked, 
+  reserveSelectionIndeterminate,
+  reserveSelectionSetType,
+  reserveSelectionToggleAll,
+  reserveSelectionRowCheckedStatusList,
+  reserveSelectionToggleRow
+} = useTable()!;
 
 let gridApi:any = null;
 let gridColumnApi:any = null;
@@ -66,7 +78,9 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
       columnConfig,
       tableConfig,
       selectionRows,
-      selectionType
+      selectionType,
+      reserveSelectionRowCheckedStatusList,
+      reserveSelectionToggleRow
     },
     suppressMovable: true,
     lockPosition: columnConfig.fixed ?? undefined,
@@ -76,7 +90,11 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
       tableConfig,
       columnIndex: index,
       selectionRows,
-      selectionType
+      selectionType,
+      reserveSelectionChecked,
+      reserveSelectionIndeterminate,
+      reserveSelectionSetType,
+      reserveSelectionToggleAll
     },
     width: columnConfig.width ?? undefined,
     minWidth: columnConfig.minWidth ?? undefined
@@ -100,14 +118,53 @@ const clearSelection = () => {
   selectionRows.value.splice(0, selectionRows.value.length);
 };
 
-const getSelectionRows = () => {
-  const selectedRows = gridApi!.getSelectedRows();
-  return selectedRows;
+const getSelectionRows = () => selectionRows.value.map(row => row);
+const toggleRowSelection = (row:any, selected?:boolean) => {
+  const index = findIndex(selectionRows.value, r => isEqual(row, r));
+  if (isBoolean(selected)) {
+    if (selected === true) {
+      if (index === -1) {
+        selectionRows.value.push(row);
+      }
+    } else {
+      if (index > -1) {
+        selectionRows.value.splice(index, 1);
+      }
+    }
+  } else {
+    if (index === -1) {
+      selectionRows.value.push(row);
+    } else {
+      selectionRows.value.splice(index, 1);
+    }
+  }
 };
+const toggleAllSelection = () => {
+};
+const toggleRowExpansion = (row, expanded?: boolean) => {};
+const setCurrentRow = (row) => {};
+const clearSort = () => {};
+const clearFilter = (columnKeys) => {};
+const doLayout = () => {};
+const sort = ({ prop, order }) => {};
+const scrollTo = (options, yCoord) => {};
+const setScrollTop = (top: number) => {};
+const setScrollLeft = (left: number) => {};
 
 defineExpose({
   clearSelection,
-  getSelectionRows 
+  getSelectionRows,
+  toggleRowSelection,
+  toggleAllSelection,
+  toggleRowExpansion,
+  setCurrentRow,
+  clearSort,
+  clearFilter,
+  doLayout,
+  sort,
+  scrollTo,
+  setScrollTop,
+  setScrollLeft
 });
 
 </script>

@@ -2,6 +2,7 @@ import { ref, computed, Ref } from 'vue';
 import { ColumnConfig, CustomColumnConfig, SelectionRows, SelectionType, TableConfig } from '@/types';
 import { findIndex, cloneDeep, merge } from 'lodash';
 import { createInjectionState } from '@vueuse/shared';
+import { useReserveSelection } from './use-reserve-selection';
 
 const [useProvideTable, useTable] = createInjectionState(() => {
   const _configs = ref<ColumnConfig[]>([]);
@@ -11,6 +12,19 @@ const [useProvideTable, useTable] = createInjectionState(() => {
   const selectionType = ref<SelectionType>('positive');
 
   const tableConfig = ref<TableConfig>({});
+
+  const {
+    checked: reserveSelectionChecked, 
+    indeterminate: reserveSelectionIndeterminate,
+    setType: reserveSelectionSetType,
+    toggleAllSelection: reserveSelectionToggleAll,
+    rowCheckedStatusList: reserveSelectionRowCheckedStatusList,
+    toggleRowSelection: reserveSelectionToggleRow
+  } = useReserveSelection({
+    selectionRows,
+    selectionType,
+    tableConfig 
+  });
 
   const insertConfig = (config: ColumnConfig, index: number) => {
     _configs.value.splice(index, 0, config);
@@ -88,7 +102,13 @@ const [useProvideTable, useTable] = createInjectionState(() => {
     removeConfig,
     getCustomColumns,
     updateCustomColumns,
-    setTableConfig
+    setTableConfig,
+    reserveSelectionChecked,
+    reserveSelectionIndeterminate,
+    reserveSelectionSetType,
+    reserveSelectionToggleAll,
+    reserveSelectionRowCheckedStatusList,
+    reserveSelectionToggleRow
   };
 });
 

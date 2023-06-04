@@ -1,6 +1,6 @@
 <template>
   <div class='selection-header'>
-    <el-checkbox :model-value='checked' :indeterminate='indeterminate' @change='onChange' />
+    <el-checkbox :model-value='reserveSelectionChecked' :indeterminate='reserveSelectionIndeterminate' @change='reserveSelectionToggleAll' />
     <el-dropdown trigger='click' @command='onCommand'>
       <span class='el-dropdown-link'>
         <i class='iconfont pro-table-icon-down' />
@@ -20,16 +20,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { watch } from 'vue';
 import { useTable } from '@/use-table';
-import { get, intersection, findIndex } from 'lodash';
 
 const COMMAND_POSITIVE = 'positiveModel';
 const COMMAND_REVERSE = 'reverseModel';
 
 const props = defineProps<{ column: any, index: number }>();
 
-const { tableConfig, selectionRows, selectionType } = useTable()!;
+const {
+  tableConfig,
+  selectionRows, 
+  selectionType, 
+  reserveSelectionChecked, 
+  reserveSelectionIndeterminate,
+  reserveSelectionSetType,
+  reserveSelectionToggleAll
+} = useTable()!;
 
 watch(() => tableConfig.value.data, () => {
   if (props.column.reserveSelection === false) {
@@ -37,64 +44,12 @@ watch(() => tableConfig.value.data, () => {
   }
 }, { deep: true });
 
-const intersectionRowKeys = computed(() => {
-  const keys = tableConfig.value.data?.map(item => get(item, tableConfig.value.rowKey));
-  const selectionRowKeys = selectionRows.value.map(item => get(item, tableConfig.value.rowKey));
-
-  return intersection(keys, selectionRowKeys);
-});
-
-const checked = computed(() => {
-  if (selectionType.value === 'positive') {
-    return intersectionRowKeys.value.length === tableConfig.value.data?.length;
-  } else {
-    return intersectionRowKeys.value.length === 0;
-  }
-});
-
-const indeterminate = computed(() => intersectionRowKeys.value.length > 0 && intersectionRowKeys.value.length < (tableConfig.value.data?.length ?? 0));
-
 const onCommand = (command) => {
-  selectionRows.value = [];
   if (command === COMMAND_POSITIVE) {
-    selectionType.value = 'positive';
+    reserveSelectionSetType('positive');
   } else if (command === COMMAND_REVERSE) {
-    selectionType.value = 'reverse';
+    reserveSelectionSetType('reverse');
   }
-};
-
-const onChange = (val) => {
-  if (selectionType.value === 'positive') {
-    if (val === true) {
-      pushRows();
-    } else {
-      deleteRows();
-    }
-  } else {
-    if (val === false) {
-      pushRows();
-    } else {
-      deleteRows();
-    }
-  }
-};
-
-const pushRows = () => {
-  tableConfig.value.data?.forEach(row => {
-    const index = findIndex(selectionRows.value, (item) => get(item, tableConfig.value.rowKey) === get(row, tableConfig.value.rowKey));
-    if (index < 0) {
-      selectionRows.value.push(row);
-    }
-  });
-};
-
-const deleteRows = () => {
-  tableConfig.value.data?.forEach(row => {
-    const index = findIndex(selectionRows.value, (item) => get(item, tableConfig.value.rowKey) === get(row, tableConfig.value.rowKey));
-    if (index > -1) {
-      selectionRows.value.splice(index, 1);
-    }
-  });
 };
 </script>
 
