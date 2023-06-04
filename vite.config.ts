@@ -30,7 +30,11 @@ export default defineConfig({
         '@vueuse/core',
         'vuedraggable',
         '@element-plus/icons',
-        'ag-grid-vue3'
+        'ag-grid-vue3',
+        '@vueuse/shared',
+        'element-plus',
+        'ag-grid-community/styles/ag-grid.css',
+        'ag-grid-community/styles/ag-theme-alpine.css'
       ],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
@@ -43,7 +47,9 @@ export default defineConfig({
           '@vueuse/core': '@vueuse/core',
           'vuedraggable': 'vuedraggable',
           '@element-plus/icons': '@element-plus/icons',
-          'ag-grid-vue3': 'ag-grid-vue3'
+          'ag-grid-vue3': 'ag-grid-vue3',
+          '@vueuse/shared': '@vueuse/shared',
+          'element-plus': 'element-plus'
         },
         exports: 'named'
       }

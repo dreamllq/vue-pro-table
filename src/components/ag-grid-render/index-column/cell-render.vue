@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ColumnConfig, TableConfig } from '@/types';
+import { ColumnConfig } from '@/types';
 import { isFunction, isNumber } from 'lodash';
 import { computed } from 'vue';
 
@@ -15,7 +15,6 @@ const props = defineProps({
 });
 
 const columnConfig = computed<ColumnConfig>(() => props.params.columnConfig);
-const tableConfig = computed<TableConfig>(() => props.params.tableConfig.value);
 const rowIndex = computed<number>(() => {
   if (columnConfig.value.index) {
     if (isNumber(columnConfig.value.index)) {

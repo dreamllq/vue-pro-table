@@ -1,6 +1,6 @@
 import { Ref, computed } from 'vue';
 import { SelectionRows, SelectionType, TableConfig } from './types';
-import { findIndex, get } from 'lodash';
+import { findIndex } from 'lodash';
 
 export const useReserveSelection = ({
   selectionRows,
