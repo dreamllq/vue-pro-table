@@ -9,6 +9,7 @@
     @first-data-rendered='onFirstDataRendered'
     @selection-changed='onSelectionChanged'
     @grid-columns-changed='onGridColumnsChanged'
+    @sort-changed='onSortChange'
   />
 </template>
 
@@ -31,7 +32,11 @@ import { findIndex, isBoolean, isEqual } from 'lodash';
 const props = defineProps<{
   config: TableConfig,
 }>();
-const emit = defineEmits(['selection-change', 'current-change']);
+const emit = defineEmits([
+  'selection-change',
+  'current-change',
+  'sort-change'
+]);
 
 const {
   columnConfigs, 
@@ -123,7 +128,16 @@ const columnDefs = computed(() => columnConfigs.value.map((columnConfig, index) 
       selectionType
     }, headerComponentParams),
     width: columnConfig.width ?? undefined,
-    minWidth: columnConfig.minWidth ?? undefined
+    minWidth: columnConfig.minWidth ?? undefined,
+    sortable: columnConfig.sortable ?? undefined,
+    sortingOrder: columnConfig.sortOrders?.map(item => {
+      const map = {
+        ascending: 'asc',
+        descending: 'desc'
+      };
+      return map[item!] || null;
+    }) ?? undefined,
+    sort: (tableConfig.value.defaultSort && tableConfig.value.defaultSort.prop === columnConfig.prop) ? (tableConfig.value.defaultSort.order === 'descending' ? 'desc' : 'asc') : undefined
   };
 }));
 
@@ -143,6 +157,24 @@ const onSelectionChanged = () => {
 
 const onGridColumnsChanged = (params) => {
   params.api.sizeColumnsToFit();
+};
+
+const onSortChange = (params) => {
+  const map = {
+    asc: 'ascending',
+    desc: 'descending'
+  };
+
+  const columnState = params.columnApi.getColumnState();
+  const column = columnState.find(item => !!item.sort);
+
+  const columnConfig = columnConfigs.value.find(item => item.prop === column?.colId);
+  
+  emit('sort-change', {
+    column: columnConfig,
+    prop: columnConfig?.prop,
+    order: map[column?.sort] || null
+  });
 };
 
 watch(() => selectionRows.value, () => {
@@ -187,15 +219,29 @@ const setCurrentRow = (row) => {
     }
   });
 };
-const clearSort = () => {};
+const clearSort = () => {
+  gridColumnApi.applyColumnState({ defaultState: { sort: null } });
+};
 const clearFilter = () => {
   console.error('not support');
 };
 const doLayout = () => {
   console.error('not support');
 };
-const sort = () => {
-  console.error('not support');
+const sort = (prop: string, order: string) => {
+  const map = {
+    ascending: 'asc',
+    descending: 'desc'
+  };
+  gridColumnApi.applyColumnState({
+    state: [
+      {
+        colId: prop,
+        sort: map[order] ?? null 
+      }
+    ],
+    defaultState: { sort: null } 
+  });
 };
 const scrollTo = () => {
   console.error('not support');

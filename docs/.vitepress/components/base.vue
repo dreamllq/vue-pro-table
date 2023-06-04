@@ -1,13 +1,17 @@
 <template>
   <div class="reset">
     <div>
+      <el-button @click="clearSort">clearSort</el-button>
+    </div>
+    <div>
       <el-button :icon="Setting" ref="settingRef"/>
     </div>
-    <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange">
+    <ProTable :data="data" ref="proTableRef" rowKey="id" :customColumnVirtualRef="settingRef" @selection-change="onSelectionChange" :defaultSort="{order:'descending', prop:'a'}"
+    @sort-change="onSortChange">
       <ProTableColumn type="reserveSelection" label="跨页选择" prop="reserveSelection">
       </ProTableColumn>
       <ProTableColumn type="index" label="c" prop="c"></ProTableColumn>
-      <ProTableColumn prop="a" label="aa" fixed="right"></ProTableColumn>
+      <ProTableColumn prop="a" label="aa" fixed="right" sortable :sortOrders="['ascending', 'descending']"></ProTableColumn>
       <ProTableColumn prop="b" label="bb" disabled>
         <template #default="{row}">{{ row }}</template>
       </ProTableColumn>
@@ -46,6 +50,10 @@ const onSubmit = (list)=>{
 
 const onSelectionChange = (rows)=>{
   console.log(rows)
+}
+
+const clearSort = ()=>{
+  proTableRef.value.clearSort()
 }
 </script>
 
